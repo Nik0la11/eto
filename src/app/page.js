@@ -4,9 +4,9 @@ import Footer from "./components/Footer";
 export default function Home() {
   return (
     <div className="bg-[#FAF9F6]">
-      <Header/>
-      <Content/>
-      <Footer/>
+      <Header />
+      <Content />
+      <Footer />
     </div>
   );
 }
