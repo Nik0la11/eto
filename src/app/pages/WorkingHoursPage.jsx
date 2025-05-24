@@ -29,7 +29,7 @@ const WorkingHoursPage = () => {
   };
 
   return (
-    <div className="bg-[#E5E4DF]">
+    <div className=" bg-[#FAF9F6] pb-24">
       {/*--------------------------------------------------- RADNO VREME ---------------------------------------------------*/}
 
       <h1 className="uppercase font-bold text-[#D4AF37] text-3xl ml-[100px] pt-24 pb-12">
@@ -103,7 +103,6 @@ const WorkingHoursPage = () => {
           </div>
         </div>
       </div>
-      <hr className="border-t border-gray-500 my-24 w-3/4 m-auto" />
     </div>
   );
 };

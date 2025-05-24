@@ -24,7 +24,7 @@ const SignIn = () => {
             <ul className="flex">
               <StyledListItem>
                 <a
-                  href=""
+                  href="/"
                   className="border-r-2 border-gray-300 px-4 uppercase"
                 >
                   Početna
