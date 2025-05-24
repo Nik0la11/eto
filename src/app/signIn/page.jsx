@@ -24,14 +24,14 @@ const SignIn = () => {
             <ul className="flex">
               <StyledListItem>
                 <a
-                  href="/"
+                  href=""
                   className="border-r-2 border-gray-300 px-4 uppercase"
                 >
                   Početna
                 </a>
               </StyledListItem>
               <StyledListItem>
-                <a href="/registration" className="px-4 uppercase">
+                <a href="registration" className="px-4 uppercase">
                   Registracija
                 </a>
               </StyledListItem>
