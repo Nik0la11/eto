@@ -1,10 +1,9 @@
-"use client";
-import HomePage from "../pages/HomePage";
-import WorkingHoursPage from "../pages/WorkingHoursPage";
-import Services from "../pages/Services";
-import Location from "../pages/Location";
-import Appointment from "../pages/Appointment";
-import App from "next/app";
+import HomePage from "./HomePage";
+import WorkingHoursPage from "./WorkingHoursPage";
+import Services from "./Services";
+import Location from "./Location";
+import Appointment from "./Appointment";
+import { Suspense } from "react";
 
 const Content = () => {
   return (
@@ -13,7 +12,9 @@ const Content = () => {
       <WorkingHoursPage />
       <Services />
       <Location />
-      <Appointment />
+      <Suspense fallback={<div>Loading...</div>}>
+        <Appointment />
+      </Suspense>
     </div>
   );
 };

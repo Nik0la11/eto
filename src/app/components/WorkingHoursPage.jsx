@@ -1,3 +1,4 @@
+"use client";
 const days = ["Pon", "Uto", "Sre", "Čet", "Pet", "Sub", "Ned"];
 import { useState } from "react";
 import Image from "next/image";

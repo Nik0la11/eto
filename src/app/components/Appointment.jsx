@@ -1,6 +1,6 @@
 "use client";
 
-import Button from "../components/Button";
+import Button from "./Button";
 import React from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
