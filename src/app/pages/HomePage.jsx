@@ -12,7 +12,7 @@ const HomePage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
+    <div className="flex flex-col items-center justify-center h-screen bg-[#E5E4DF]">
       <div className="flex flex-col items-center">
         <h1 className="text-[#2E2E2E] font-['Great_Vibes'] uppercase font-semibold text-xl">
           Frizerski salon

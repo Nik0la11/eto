@@ -4,13 +4,15 @@ import StyledListItem from "../components/StyledListItem";
 import { useRouter } from "next/navigation";
 import Button from "../components/Button";
 import Footer from "../components/Footer";
-
+import { useState } from "react";
+import Link from "next/link";
 const SignIn = () => {
   const route = useRouter();
 
-  const handleHome = () => {
-    route.push("/");
-  };
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [surname, setSurname] = useState("");
+  const [number, setNumber] = useState("");
 
   const handleSignIn = () => {
     route.push("/signIn");
@@ -60,13 +62,18 @@ const SignIn = () => {
                 type="mail"
                 name="mail"
                 className="border p-2 rounded"
+                value={email || ""}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
               <p className="font-['Montserrat'] pt-4">Broj telefona</p>
               <input
                 type="tel"
+                pattern="[0-9]{9,15}"
                 name="phone"
                 className="border p-2 rounded focus:outline-none"
+                value={number || ""}
+                onChange={(e) => setNumber(e.target.value)}
                 required
               />
               <div className="flex gap-2 py-4">
@@ -76,6 +83,8 @@ const SignIn = () => {
                     type="name"
                     name="name"
                     className="border p-2 rounded focus:outline-none flex-1"
+                    value={name || ""}
+                    onChange={(e) => setName(e.target.value)}
                     required
                   />
                 </div>
@@ -85,6 +94,8 @@ const SignIn = () => {
                     type="name"
                     name="surname"
                     className="border p-2 rounded focus:outline-none flex-1"
+                    value={surname || ""}
+                    onChange={(e) => setSurname(e.target.value)}
                     required
                   />
                 </div>
@@ -110,7 +121,19 @@ const SignIn = () => {
                 </div>
               </div>
               <div className="flex justify-center items-center gap-20">
-                <Button className="flex-1">Registracija</Button>
+                <Link
+                  href={{
+                    pathname: "/",
+                    query: {
+                      email: email,
+                      name: name,
+                      surname: surname,
+                      number: number,
+                    },
+                  }}
+                >
+                  <Button className="flex-1">Registracija</Button>
+                </Link>
                 <label className="flex justify-center items-center gap-1">
                   <input type="checkbox" />
                   <span className="font-['Montserrat']">

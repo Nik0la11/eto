@@ -1,6 +1,5 @@
 const days = ["Pon", "Uto", "Sre", "Čet", "Pet", "Sub", "Ned"];
 import { useState } from "react";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import Image from "next/image";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -29,7 +28,7 @@ const WorkingHoursPage = () => {
   };
 
   return (
-    <div className=" bg-[#FAF9F6] pb-24" id="hours">
+    <div className=" bg-[#FAF9F6] pb-24 " id="hours ">
       {/*--------------------------------------------------- RADNO VREME ---------------------------------------------------*/}
 
       <h1 className="uppercase font-bold text-[#D4AF37] text-3xl ml-[100px] pt-24 pb-12">
