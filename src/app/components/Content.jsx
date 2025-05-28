@@ -8,7 +8,9 @@ import { Suspense } from "react";
 const Content = () => {
   return (
     <div>
-      <HomePage />
+      <Suspense fallback={<div>Loading...</div>}>
+        <HomePage />
+      </Suspense>
       <WorkingHoursPage />
       <Services />
       <Location />
