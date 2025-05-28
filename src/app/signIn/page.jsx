@@ -4,8 +4,12 @@ import StyledListItem from "../components/StyledListItem";
 import { useRouter } from "next/navigation";
 import Button from "../components/Button";
 import Footer from "../components/Footer";
+import { useState } from "react";
+import Link from "next/link";
 
 const SignIn = () => {
+  const [logedIn, setLogedIn] = useState(true);
+
   const route = useRouter();
 
   const handleHome = () => {
@@ -75,7 +79,16 @@ const SignIn = () => {
                 required
               />
               <div className="flex">
-                <Button>Prijava</Button>
+                <Link
+                  href={{
+                    pathname: "/",
+                    query: {
+                      logedIn: logedIn,
+                    },
+                  }}
+                >
+                  <Button>Prijava</Button>
+                </Link>
               </div>
             </form>
             <p className="font-['Montserrat'] text-[#D4AF37] mt-2">
