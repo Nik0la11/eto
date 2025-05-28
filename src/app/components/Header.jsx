@@ -3,6 +3,8 @@ import StyledListItem from "./StyledListItem";
 import RuleBook from "./RuleBook";
 import Privacy from "./Privacy";
 import MyAppoints from "./MyAppoints";
+import { Suspense } from "react";
+
 const services = [
   { id: "hours", label: "Radno vreme" },
   { id: "gallery", label: "Galerija" },
@@ -60,7 +62,13 @@ const Header = () => {
 
       <RuleBook rules={rules} setRules={setRules} />
       <Privacy privacy={privacy} setPrivacy={setPrivacy} />
-      <MyAppoints appointment={appointment} setAppointment={setAppointment} />
+      <Suspense>
+        <MyAppoints
+          appointment={appointment}
+          setAppointment={setAppointment}
+          fallback={<div>Loading...</div>}
+        />
+      </Suspense>
     </div>
   );
 };
