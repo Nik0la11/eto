@@ -35,3 +35,13 @@ html {
   color: #d4af37 !important;
   opacity: 1 !important;
 }
+
+.slick-slider,
+.slick-list,
+.slick-track,
+.slick-slide,
+.slick-slide div,
+.slick-slide img {
+  z-index: 0 !important;
+  position: relative !important;
+}

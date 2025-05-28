@@ -64,6 +64,11 @@ const Services = () => {
           </li>
         </ul>
       </div>
+
+      <hr
+        className="border-t border-gray-500  w-3/4 m-auto invisible"
+        id="location"
+      />
     </div>
   );
 };

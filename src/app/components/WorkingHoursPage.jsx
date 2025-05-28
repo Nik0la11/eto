@@ -29,61 +29,64 @@ const WorkingHoursPage = () => {
   };
 
   return (
-    <div className=" bg-[#FAF9F6] pb-24 " id="hours ">
+    <div className=" bg-[#FAF9F6] pb-24 ">
       {/*--------------------------------------------------- RADNO VREME ---------------------------------------------------*/}
-
-      <h1 className="uppercase font-bold text-[#D4AF37] text-3xl ml-[100px] pt-24 pb-12">
-        • Radno vreme
-      </h1>
-      <ul className="flex justify-center align-center gap-8">
-        {days.map((day, index) => (
-          <li key={index}>
-            <div
-              onMouseEnter={() => setHover(index)}
-              onMouseLeave={() => setHover(null)}
-              className="flex flex-col justify-center items-center p-12 bg-[#B5B5AE] hover:bg-[#D4AF37] transition-all duration-300 "
-            >
-              <h1 className="uppercase text-3xl font-bold pb-4">{day}</h1>
-              {day === "Ned" ? (
-                <p
-                  className={`mb-12 uppercase tracking-[-0.12em]  ${hover === index ? "text-gray-800" : "text-[#CFCFCA]"}`}
-                >
-                  Zatvoreno
-                </p>
-              ) : (
-                <>
+      <div id="hours">
+        <h1 className="uppercase font-bold text-[#D4AF37] text-3xl ml-[100px] pt-24 pb-12">
+          • Radno vreme
+        </h1>
+        <ul className="flex justify-center align-center gap-8">
+          {days.map((day, index) => (
+            <li key={index}>
+              <div
+                onMouseEnter={() => setHover(index)}
+                onMouseLeave={() => setHover(null)}
+                className="flex flex-col justify-center items-center p-12 bg-[#B5B5AE] hover:bg-[#D4AF37] transition-all duration-300 "
+              >
+                <h1 className="uppercase text-3xl font-bold pb-4">{day}</h1>
+                {day === "Ned" ? (
                   <p
-                    className={
-                      hover === index ? "text-gray-800" : "text-[#CFCFCA]"
-                    }
+                    className={`mb-12 uppercase tracking-[-0.12em]  ${hover === index ? "text-gray-800" : "text-[#CFCFCA]"}`}
                   >
-                    08:00
+                    Zatvoreno
                   </p>
-                  <p
-                    className={
-                      hover === index ? "text-[#CFCFCA]" : "text-gray-800"
-                    }
-                  >
-                    DO
-                  </p>
-                  <p
-                    className={
-                      hover === index ? "text-gray-800" : "text-[#CFCFCA]"
-                    }
-                  >
-                    22:00
-                  </p>
-                </>
-              )}
-            </div>
-          </li>
-        ))}
-      </ul>
-
+                ) : (
+                  <>
+                    <p
+                      className={
+                        hover === index ? "text-gray-800" : "text-[#CFCFCA]"
+                      }
+                    >
+                      08:00
+                    </p>
+                    <p
+                      className={
+                        hover === index ? "text-[#CFCFCA]" : "text-gray-800"
+                      }
+                    >
+                      DO
+                    </p>
+                    <p
+                      className={
+                        hover === index ? "text-gray-800" : "text-[#CFCFCA]"
+                      }
+                    >
+                      22:00
+                    </p>
+                  </>
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
       {/*--------------------------------------------------- GALERIJA ---------------------------------------------------*/}
 
-      <hr className="border-t border-gray-500 my-24 w-3/4 m-auto" />
-      <div className=" flex flex-col justify-center items-center">
+      <hr
+        className="border-t border-gray-500 my-24 w-3/4 m-auto"
+        id="gallery"
+      />
+      <div className=" flex flex-col justify-center items-center ">
         <h3 className="font-['Great_Vibes'] text-xl font-bold">Galerija</h3>
         <div className="w-3/4 m-auto">
           <div className="mt-12">

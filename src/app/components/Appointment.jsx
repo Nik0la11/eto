@@ -81,7 +81,7 @@ const Appointment = () => {
             placeholder="Unesite ime i prezime"
             readOnly
             className="border p-2 rounded focus:outline-none"
-            value={`${name} ${surname}`}
+            value={`${name || ""} ${surname || ""}`.trim()}
           />
           <label className="font-['Montserrat'] pt-4">Vaš broj telefona:</label>
           <input
