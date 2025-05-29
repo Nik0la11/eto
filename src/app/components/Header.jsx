@@ -19,7 +19,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 
 const useScreenSize = () => {
-  const [screenSize, setScreenSize] = (useState < "sm") | "lg" | (null > null);
+  const [screenSize, setScreenSize] = useState("lg");
 
   useEffect(() => {
     const getScreenSize = () => {

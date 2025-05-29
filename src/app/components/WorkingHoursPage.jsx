@@ -27,7 +27,7 @@ const getBreakpoint = (width) => {
 };
 
 const useBreakpoint = () => {
-  const [breakpoint, setBreakpoint] = (useState < null) | (string > null);
+  const [breakpoint, setBreakpoint] = useState("");
 
   useEffect(() => {
     const handleResize = () => {
