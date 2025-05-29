@@ -11,7 +11,7 @@ const RuleBook = ({ rules, setRules }) => {
     <div
       className={`fixed top-0 left-0 flex justify-center items-center z-[9999] h-screen bg-[#00000080] w-full ${rules ? "invisible" : "visible"}`}
     >
-      <div className=" bg-[#FAF9F6] w-1/2 p-4">
+      <div className=" bg-[#FAF9F6] sm:w-1/2 sm:min-w-[400px] w-[400px] m-auto  p-4">
         <div className="flex my-2">
           <h1 className="uppercase font-bold text-[#D4AF37] text-3xl flex-1">
             Pravilnik

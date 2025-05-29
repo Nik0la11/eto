@@ -1,6 +1,6 @@
 "use client";
 const days = ["Pon", "Uto", "Sre", "Čet", "Pet", "Sub", "Ned"];
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -17,25 +17,64 @@ const images = [
   "images/photo8.jpg",
 ];
 
+const getBreakpoint = (width) => {
+  if (width < 640) return "xs";
+  if (width < 768) return "sm";
+  if (width < 1024) return "md";
+  if (width < 1280) return "lg";
+  if (width < 1536) return "xl";
+  return "2xl";
+};
+
+const useBreakpoint = () => {
+  const [breakpoint, setBreakpoint] = useState(
+    getBreakpoint(window.innerWidth)
+  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      setBreakpoint(getBreakpoint(window.innerWidth));
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  return breakpoint;
+};
+
 const WorkingHoursPage = () => {
   const [hover, setHover] = useState();
+  const breakpoint = useBreakpoint();
+
+  let slidesToShow = 2;
+
+  if (breakpoint === "xs") slidesToShow = 2;
+  else if (breakpoint === "sm") slidesToShow = 2;
+  else if (breakpoint === "md") slidesToShow = 3;
+  else if (breakpoint === "lg") slidesToShow = 4;
+  else if (breakpoint === "xl") slidesToShow = 5;
+  else slidesToShow = 6;
 
   const settings = {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 6,
+    slidesToShow: slidesToShow,
     slidesToScroll: 1,
+    centerMode: true,
+    centerPadding: "0px",
   };
 
   return (
-    <div className=" bg-[#FAF9F6] pb-24 ">
+    <div className=" bg-[#FAF9F6] pb-24 w-full ">
       {/*--------------------------------------------------- RADNO VREME ---------------------------------------------------*/}
       <div id="hours">
         <h1 className="uppercase font-bold text-[#D4AF37] text-3xl ml-[100px] pt-24 pb-12">
           • Radno vreme
         </h1>
-        <ul className="flex justify-center align-center gap-8">
+        <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-4 w-full sm:w-3/4  mx-auto">
           {days.map((day, index) => (
             <li key={index}>
               <div
@@ -93,7 +132,7 @@ const WorkingHoursPage = () => {
             <Slider {...settings}>
               {images.map((src, index) => (
                 <div key={index} className="">
-                  <div className="w-[170px] h-[250px] overflow-hidden shadow relative">
+                  <div className="w-[170px] h-[250px] xs:w-[270px] xs:h-[350px] overflow-hidden shadow relative">
                     <Image
                       src={src}
                       alt={`Gallery ${index + 1}`}

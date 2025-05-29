@@ -3,10 +3,10 @@ import StyledListItem from "./StyledListItem";
 
 const Footer = () => {
   return (
-    <footer className="bg-[#E5E4DF] p-12">
+    <footer className="bg-[#E5E4DF] p-12 ">
       <div className="flex flex-col justify-center items-center">
         <div className="pb-8">
-          <ul className="flex gap-48">
+          <ul className="flex flex-col gap-8 sm:flex-row sm:gap-48">
             <li className="text-[#2E2E2E] font-['Great_Vibes']  font-semibold ">
               <div className="flex flex-col justify-center items-center">
                 <MapPinIcon className="w-12 h-12" />

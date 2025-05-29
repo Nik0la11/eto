@@ -67,7 +67,8 @@ const Appointment = () => {
             ))}
           </select>
         </div>
-        <div className="flex flex-wrap gap-y-4 my-12 gap-x-8 w-3/4 m-auto">
+
+        <div className="flex flex-wrap gap-y-4 my-12 gap-x-8 w-3/4 m-auto justify-center">
           {timeSlots.map((time) => (
             <Button key={time} onClick={() => setSelectedTime(time)}>
               {time}

@@ -4,7 +4,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 
-const RuleBook = ({ appointment, setAppointment }) => {
+const MyAppoints = ({ appointment, setAppointment }) => {
   const handleAppointment = () => {
     setAppointment(true);
   };
@@ -21,9 +21,9 @@ const RuleBook = ({ appointment, setAppointment }) => {
 
   return (
     <div
-      className={`fixed top-0 left-0 flex justify-center items-center z-[9999] h-screen bg-[#00000080] w-full ${appointment ? "invisible" : "visible"}`}
+      className={`fixed top-0 left-0 flex justify-center items-center z-[9999] h-screen bg-[#00000080] w-full ${appointment ? "invisible" : "visible"} `}
     >
-      <div className=" bg-[#FAF9F6] w-1/2 p-4">
+      <div className=" bg-[#FAF9F6] p-4 sm:w-1/2 sm:min-w-[400px] w-[400px] m-auto">
         <div className="mb-4">
           <div className="flex ">
             <h1 className="uppercase font-bold text-[#D4AF37] text-3xl flex-1">
@@ -100,4 +100,4 @@ const RuleBook = ({ appointment, setAppointment }) => {
   );
 };
 
-export default RuleBook;
+export default MyAppoints;
