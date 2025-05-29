@@ -27,14 +27,14 @@ const getBreakpoint = (width) => {
 };
 
 const useBreakpoint = () => {
-  const [breakpoint, setBreakpoint] = useState(
-    getBreakpoint(window.innerWidth)
-  );
+  const [breakpoint, setBreakpoint] = (useState < null) | (string > null);
 
   useEffect(() => {
     const handleResize = () => {
       setBreakpoint(getBreakpoint(window.innerWidth));
     };
+
+    handleResize();
 
     window.addEventListener("resize", handleResize);
 

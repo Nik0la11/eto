@@ -20,9 +20,6 @@ const HomePage = () => {
 
   const logedIn = searchParams.get("logedIn") === "true";
 
-  const handleSignOut = () => {
-    set;
-  };
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-[#E5E4DF]">
       <div className="flex flex-col items-center">

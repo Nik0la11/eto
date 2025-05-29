@@ -19,18 +19,23 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 
 const useScreenSize = () => {
-  const [screenSize, setScreenSize] = useState("lg");
+  const [screenSize, setScreenSize] = (useState < "sm") | "lg" | (null > null);
 
   useEffect(() => {
-    const updateSize = () => {
+    const getScreenSize = () => {
       const width = window.innerWidth;
-      setScreenSize(width < 1024 ? "sm" : "lg");
+      return width < 768 ? "sm" : "lg";
     };
 
-    updateSize();
-    window.addEventListener("resize", updateSize);
+    setScreenSize(getScreenSize());
 
-    return () => window.removeEventListener("resize", updateSize);
+    const handleResize = () => {
+      setScreenSize(getScreenSize());
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   return screenSize;
