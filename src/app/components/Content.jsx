@@ -4,19 +4,16 @@ import Services from "./Services";
 import Location from "./Location";
 import Appointment from "./Appointment";
 import { Suspense } from "react";
+import Appointment2 from "./Appointment2";
 
 const Content = () => {
   return (
     <div>
-      <Suspense fallback={<div>Loading...</div>}>
-        <HomePage />
-      </Suspense>
       <WorkingHoursPage />
       <Services />
+      <Appointment2 />
+      <Appointment />
       <Location />
-      <Suspense fallback={<div>Loading...</div>}>
-        <Appointment />
-      </Suspense>
     </div>
   );
 };

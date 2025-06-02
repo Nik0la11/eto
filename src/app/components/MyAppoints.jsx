@@ -1,17 +1,14 @@
 "use client";
 import Button from "./Button";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { useSearchParams } from "next/navigation";
+
 import { useRouter } from "next/navigation";
+import { UserIcon } from "@heroicons/react/24/outline";
 
 const MyAppoints = ({ appointment, setAppointment }) => {
   const handleAppointment = () => {
     setAppointment(true);
   };
-
-  const searchParams = useSearchParams();
-
-  const logedIn = searchParams.get("logedIn") === "true";
 
   const route = useRouter();
 
@@ -86,11 +83,15 @@ const MyAppoints = ({ appointment, setAppointment }) => {
           <div className="my-2"></div>
         </div>
         <div className="flex justify-end gap-2">
-          {!logedIn && (
-            <Button onClick={handleSignIn} className="place-self-end">
-              Prijava
+          {
+            <Button
+              onClick={handleSignIn}
+              className="place-self-end flex gap-2"
+            >
+              <UserIcon className="h-6 w-6 text-black-600" />
+              <p>Prijavi se</p>
             </Button>
-          )}
+          }
           <Button onClick={handleAppointment} className="place-self-end">
             Zatvori
           </Button>

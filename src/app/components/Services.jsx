@@ -6,10 +6,12 @@ const Services = () => {
       {/*--------------------------------------------------- USLUGE ---------------------------------------------------*/}
 
       <hr className="border-t border-gray-500  w-3/4 m-auto" />
-      <div className="flex flex-col w-full">
-        <h1 className="uppercase font-bold text-[#D4AF37] text-3xl pt-24 pb-12  ml-[100px] ">
-          • Naše usluge
-        </h1>
+      <div className="flex flex-col">
+        <div className="flex w-3/4 m-auto">
+          <h1 className="uppercase font-bold text-[#D4AF37] text-3xl pt-24 pb-12 text-left">
+            • Naše usluge
+          </h1>
+        </div>
         <ul className="grid grid-cols-none lg:grid-cols-3 gap-8 w-3/4 mx-auto place-items-center">
           <li className="text-[#2E2E2E] font-['Great_Vibes']  font-semibold ">
             <div className="flex flex-col justify-center items-center max-w-[264px]">

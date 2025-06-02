@@ -5,6 +5,7 @@ import Privacy from "./Privacy";
 import MyAppoints from "./MyAppoints";
 import { Suspense } from "react";
 import { Bars3Icon } from "@heroicons/react/24/outline";
+import HomePage from "./HomePage";
 
 const services = [
   { id: "hours", label: "Radno vreme" },
@@ -94,9 +95,9 @@ const Header = () => {
       ) : (
         <div>
           <div className="flex items-center p-8 mb-24 fixed z-50 top-0 left-0 w-full bg-[#E5E4DF] border-b border-gray-300">
-            <p className="flex-1">Logo</p>
+            <p className="flex-1 text-black">Logo</p>
             <button onClick={handleList}>
-              <Bars3Icon className="h-6 w-6 text-black-600" />
+              <Bars3Icon className="h-6 w-6 text-black-600 text-black" />
             </button>
           </div>
           {list && (
@@ -105,10 +106,7 @@ const Header = () => {
                 {services.map((service, index) =>
                   service.id ? (
                     <Link href={`#${service.id}`} key={index}>
-                      <StyledListItem
-                        className="border-b border-gray-300 text-center"
-                        key={index}
-                      >
+                      <StyledListItem className="border-b border-gray-300 text-center">
                         {service.label}
                       </StyledListItem>
                     </Link>
@@ -145,6 +143,11 @@ const Header = () => {
           fallback={<div>Loading...</div>}
         />
       </Suspense>
+      <HomePage
+        appointment={appointment}
+        setAppointment={setAppointment}
+        className="invisible"
+      />
     </div>
   );
 };

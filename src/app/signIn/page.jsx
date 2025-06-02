@@ -6,6 +6,7 @@ import Button from "../components/Button";
 import Footer from "../components/Footer";
 import { useState } from "react";
 import Link from "next/link";
+import { UserIcon } from "@heroicons/react/24/outline";
 
 const SignIn = () => {
   const [logedIn, setLogedIn] = useState(true);
@@ -87,7 +88,10 @@ const SignIn = () => {
                     },
                   }}
                 >
-                  <Button>Prijava</Button>
+                  <Button className="flex gap-2">
+                    <UserIcon className="h-6 w-6 text-black-600" />
+                    <p>Prijava</p>
+                  </Button>
                 </Link>
               </div>
             </form>

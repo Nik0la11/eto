@@ -70,10 +70,12 @@ const WorkingHoursPage = () => {
   return (
     <div className=" bg-[#FAF9F6] pb-24 w-full ">
       {/*--------------------------------------------------- RADNO VREME ---------------------------------------------------*/}
-      <div id="hours">
-        <h1 className="uppercase font-bold text-[#D4AF37] text-3xl ml-[100px] pt-24 pb-12">
-          • Radno vreme
-        </h1>
+      <div id="hours" className="flex flex-col">
+        <div className="flex w-3/4 m-auto">
+          <h1 className="uppercase font-bold text-[#D4AF37] text-3xl pt-24 pb-12">
+            • Radno vreme
+          </h1>
+        </div>
         <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-4 w-full sm:w-3/4  mx-auto">
           {days.map((day, index) => (
             <li key={index}>

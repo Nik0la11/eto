@@ -7,19 +7,17 @@ import {
 } from "@heroicons/react/24/outline";
 import { Instagram } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useSearchParams } from "next/navigation";
 
-const HomePage = () => {
+const HomePage = ({ appointment, setAppointment }) => {
   const router = useRouter();
 
   const handleAppointment = () => {
     router.push("/signIn");
   };
 
-  const searchParams = useSearchParams();
-
-  const logedIn = searchParams.get("logedIn") === "true";
-
+  const handleMyAppoints = () => {
+    setAppointment(false);
+  };
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-[#E5E4DF]">
       <div className="flex flex-col items-center">
@@ -36,7 +34,10 @@ const HomePage = () => {
           </div>
         </Button>
         <Button>
-          <div className="flex items-center gap-2 justify-center">
+          <div
+            className="flex items-center gap-2 justify-center"
+            onClick={handleMyAppoints}
+          >
             <UserIcon className="h-6 w-6 text-black-600" />
             <p>Moji termini</p>
           </div>
@@ -49,13 +50,12 @@ const HomePage = () => {
           <Instagram size={24} />
         </Button>
       </div>
-      {logedIn && (
-        <Button className={`flex items-center gap-2 justify-center `}>
-          <div>
-            <p>Odjava</p>
-          </div>
-        </Button>
-      )}
+
+      <Button className={`flex items-center gap-2 justify-center `}>
+        <div>
+          <p>Odjava</p>
+        </div>
+      </Button>
 
       <p className="text-xl">Usluge koje vrsi frizerski salon</p>
     </div>
