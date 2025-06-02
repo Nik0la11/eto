@@ -143,11 +143,13 @@ const Header = () => {
           fallback={<div>Loading...</div>}
         />
       </Suspense>
-      <HomePage
-        appointment={appointment}
-        setAppointment={setAppointment}
-        className="invisible"
-      />
+      <Suspense fallback={<div>Loading...</div>}>
+        <HomePage
+          appointment={appointment}
+          setAppointment={setAppointment}
+          className="invisible"
+        />
+      </Suspense>
     </div>
   );
 };

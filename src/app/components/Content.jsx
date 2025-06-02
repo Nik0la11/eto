@@ -12,7 +12,9 @@ const Content = () => {
       <WorkingHoursPage />
       <Services />
       <Appointment2 />
-      <Appointment />
+      <Suspense fallback={<div>Loading...</div>}>
+        <Appointment />
+      </Suspense>
       <Location />
     </div>
   );
