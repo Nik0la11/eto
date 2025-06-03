@@ -5,6 +5,7 @@ import Location from "./Location";
 import Appointment from "./Appointment";
 import { Suspense } from "react";
 import Appointment2 from "./Appointment2";
+import TopButton from "./TopButton";
 
 const Content = () => {
   return (
@@ -16,6 +17,7 @@ const Content = () => {
         <Appointment />
       </Suspense>
       <Location />
+      <TopButton />
     </div>
   );
 };
