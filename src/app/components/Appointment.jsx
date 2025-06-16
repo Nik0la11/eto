@@ -87,7 +87,9 @@ const Appointment = () => {
             className="border p-2 rounded focus:outline-none"
             value={`${name || ""} ${surname || ""}`.trim()}
           />
-          <label className="font-['Montserrat'] pt-4">Vaš broj telefona:</label>
+          <label className="font-['Montserrat'] pt-4 text-[#2E2E2E]">
+            Vaš broj telefona:
+          </label>
           <input
             type="text"
             placeholder="Unesite broj telefona"
@@ -95,7 +97,9 @@ const Appointment = () => {
             className="border p-2 rounded focus:outline-none"
             value={number}
           />
-          <label className="font-['Montserrat'] pt-4">Vaša email adresa:</label>
+          <label className="font-['Montserrat'] pt-4 text-[#2E2E2E]">
+            Vaša email adresa:
+          </label>
           <input
             type="text"
             placeholder="Unesite email"
@@ -103,7 +107,9 @@ const Appointment = () => {
             className="border p-2 rounded focus:outline-none"
             value={email}
           />
-          <label className="font-['Montserrat'] pt-4">Datum:</label>
+          <label className="font-['Montserrat'] pt-4 text-[#2E2E2E]">
+            Datum:
+          </label>
           <input
             type="text"
             placeholder="Izaberite datum"
@@ -111,7 +117,9 @@ const Appointment = () => {
             className="border p-2 rounded focus:outline-none"
             value={selectedDate}
           />
-          <label className="font-['Montserrat'] pt-4">Termin:</label>
+          <label className="font-['Montserrat'] pt-4 text-[#2E2E2E]">
+            Termin:
+          </label>
           <input
             type="text"
             placeholder="Izaberite termin"

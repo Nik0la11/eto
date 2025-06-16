@@ -57,7 +57,7 @@ const HomePage = ({ appointment, setAppointment }) => {
         </div>
       </Button>
 
-      <p className="text-xl">Usluge koje vrsi frizerski salon</p>
+      <p className="text-xl text-[#2E2E2E]">Usluge koje vrsi frizerski salon</p>
     </div>
   );
 };

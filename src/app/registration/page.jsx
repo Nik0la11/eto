@@ -43,21 +43,23 @@ const SignIn = () => {
         <div className="flex flex-col justify-center items-center pt-36 bg-[#FAF9F6]">
           <div className="flex flex-col justify-center mb-8 w-[432px]">
             <div className="pb-2">
-              <h3 className="text-2xl font-['Montserrat'] font-bold pb-2">
+              <h3 className="text-2xl font-['Montserrat'] font-bold pb-2 text-[#2E2E2E]">
                 Već imate nalog?
               </h3>
-              <p className="font-['Montserrat']">
+              <p className="font-['Montserrat'] text-[#2E2E2E]">
                 Prijavite se i zakažite vaš termin
               </p>
             </div>
             <Button onClick={handleSignIn}>Prijava</Button>
           </div>
           <div className="flex flex-col justify-center  ">
-            <h3 className="text-2xl font-['Montserrat'] font-bold pb-2">
+            <h3 className="text-2xl font-['Montserrat'] font-bold pb-2 text-[#2E2E2E]">
               Registracija
             </h3>
             <form className="flex flex-col gap-2">
-              <p className="font-['Montserrat'] pt-4">E-mail adresa</p>
+              <p className="font-['Montserrat'] pt-4 text-[#2E2E2E]">
+                E-mail adresa
+              </p>
               <input
                 type="mail"
                 name="mail"
@@ -66,7 +68,9 @@ const SignIn = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
-              <p className="font-['Montserrat'] pt-4">Broj telefona</p>
+              <p className="font-['Montserrat'] pt-4 text-[#2E2E2E]">
+                Broj telefona
+              </p>
               <input
                 type="tel"
                 pattern="[0-9]{9,15}"
@@ -78,7 +82,7 @@ const SignIn = () => {
               />
               <div className="flex gap-2 py-4">
                 <div className="flex flex-col gap-2">
-                  <p className="font-['Montserrat']">Ime</p>
+                  <p className="font-['Montserrat'] text-[#2E2E2E]">Ime</p>
                   <input
                     type="name"
                     name="name"
@@ -89,7 +93,7 @@ const SignIn = () => {
                   />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <p className="font-['Montserrat']">Prezime</p>
+                  <p className="font-['Montserrat'] text-[#2E2E2E]">Prezime</p>
                   <input
                     type="name"
                     name="surname"
@@ -102,7 +106,7 @@ const SignIn = () => {
               </div>
               <div className="flex gap-2 py-4">
                 <div className="flex flex-col gap-2">
-                  <p className="font-['Montserrat']">Lozinka</p>
+                  <p className="font-['Montserrat'] text-[#2E2E2E]">Lozinka</p>
                   <input
                     type="password"
                     name="password"
@@ -111,7 +115,9 @@ const SignIn = () => {
                   />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <p className="font-['Montserrat']">Ponovite lozinku</p>
+                  <p className="font-['Montserrat'] text-[#2E2E2E]">
+                    Ponovite lozinku
+                  </p>
                   <input
                     type="password"
                     name="password2"
@@ -136,7 +142,7 @@ const SignIn = () => {
                 </Link>
                 <label className="flex justify-center items-center gap-1">
                   <input type="checkbox" />
-                  <span className="font-['Montserrat']">
+                  <span className="font-['Montserrat'] text-[#2E2E2E]">
                     Prihvatam uslove korišćenja
                   </span>
                 </label>

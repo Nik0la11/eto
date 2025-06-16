@@ -46,10 +46,10 @@ const SignIn = () => {
         <div className="flex flex-col justify-center items-center pt-36 bg-[#FAF9F6] ">
           <div className="flex flex-col justify-center mb-8 w-[432px]">
             <div className="pb-2">
-              <h3 className="text-2xl font-['Montserrat'] font-bold pb-2">
+              <h3 className="text-2xl font-['Montserrat'] font-bold pb-2 text-[#2E2E2E]">
                 Nemate nalog?
               </h3>
-              <p className="font-['Montserrat']">
+              <p className="font-['Montserrat'] text-[#2E2E2E]">
                 Zakazivanje je dostupno samo registrovanim korisnicima
               </p>
             </div>
@@ -60,7 +60,9 @@ const SignIn = () => {
               Prijava
             </h3>
             <form className="flex flex-col gap-2">
-              <p className="font-['Montserrat']">E-mail adresa</p>
+              <p className="font-['Montserrat'] text-[#2E2E2E]">
+                E-mail adresa
+              </p>
               <input
                 type="mail"
                 name="mail"
@@ -68,8 +70,10 @@ const SignIn = () => {
                 required
               />
               <div className="flex">
-                <p className="font-['Montserrat'] flex-1">Lozinka</p>
-                <p className="font-['Montserrat'] text-[#D4AF37]">
+                <p className="font-['Montserrat'] flex-1 text-[#2E2E2E]">
+                  Lozinka
+                </p>
+                <p className="font-['Montserrat'] text-[#D4AF37] text-[#2E2E2E]">
                   Zaboravili ste lozinku?
                 </p>
               </div>

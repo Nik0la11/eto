@@ -5,6 +5,7 @@ import Image from "next/image";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"; // or any icon
 
 const images = [
   "images/photo1.jpg",
@@ -57,6 +58,24 @@ const WorkingHoursPage = () => {
   else if (breakpoint === "xl") slidesToShow = 5;
   else slidesToShow = 6;
 
+  const CustomPrevArrow = ({ onClick }) => (
+    <button
+      onClick={onClick}
+      className="absolute left-[-40px] top-1/2 transform -translate-y-1/2 z-10"
+    >
+      <ChevronLeftIcon className="w-6 h-6 text-black" />
+    </button>
+  );
+
+  const CustomNextArrow = ({ onClick }) => (
+    <button
+      onClick={onClick}
+      className="absolute right-[-25px] top-1/2 transform -translate-y-1/2 z-10"
+    >
+      <ChevronRightIcon className="w-6 h-6 text-black" />
+    </button>
+  );
+
   const settings = {
     dots: true,
     infinite: true,
@@ -65,6 +84,8 @@ const WorkingHoursPage = () => {
     slidesToScroll: 1,
     centerMode: true,
     centerPadding: "0px",
+    prevArrow: <CustomPrevArrow />,
+    nextArrow: <CustomNextArrow />,
   };
 
   return (
@@ -128,7 +149,9 @@ const WorkingHoursPage = () => {
         id="gallery"
       />
       <div className=" flex flex-col justify-center items-center ">
-        <h3 className="font-['Great_Vibes'] text-xl font-bold">Galerija</h3>
+        <h3 className="font-['Great_Vibes'] text-xl font-bold text-[#2E2E2E]">
+          Galerija
+        </h3>
         <div className="w-3/4 m-auto">
           <div className="mt-12">
             <Slider {...settings}>

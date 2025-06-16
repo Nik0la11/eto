@@ -2,7 +2,7 @@ const Location = () => {
   return (
     //eto da bi dodo kako treba lokaciju i da imam opciju da customizeam sve sto se tice toga potrebno je dodati karticu tako za sad je ovo lokacija
 
-    <div className="w-full h-[400px] flex flex-col justify-center items-center bg-[#FAF9F6] mb-24 pt-12 ">
+    <div className="w-full h-[400px] flex flex-col justify-center items-center bg-[#FAF9F6] mb-12 pt-12 ">
       <h3
         className="text-[#2E2E2E] font-['Great_Vibes'] font-semibold text-2xl pb-12 "
         id="location"
