@@ -3,15 +3,30 @@
 import Button from "./Button";
 import React from "react";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
-import Link from "next/link";
+import { useEffect } from "react";
 
 const Appointment = () => {
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(
     new Date().toISOString().split("T")[0]
   );
+  const [data, setData] = useState(null);
+  const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+
+  useEffect(() => {
+    fetch(`${BASE_URL}/v1/appointment/get_available_dates`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ date: selectedDate }),
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((json) => setData(json))
+      .catch((err) => console.error("Error fetching data: ", err));
+  }, [selectedDate]);
 
   const getNextThreeDays = () => {
     const dates = [];
@@ -26,19 +41,6 @@ const Appointment = () => {
   };
 
   const dates = getNextThreeDays();
-
-  const generateTimeSlots = () => {
-    const slots = [];
-
-    for (let i = 9; i < 17; i++) {
-      slots.push(`${i.toString().padStart(2, "0")}: 00`);
-      slots.push(`${i.toString().padStart(2, "0")}: 30`);
-    }
-
-    return slots;
-  };
-
-  const timeSlots = generateTimeSlots();
 
   const searchParams = useSearchParams();
 
@@ -67,9 +69,16 @@ const Appointment = () => {
       </div>
 
       <div className="flex flex-wrap gap-y-4 my-12 gap-x-8 w-3/4 m-auto justify-center">
-        {timeSlots.map((time) => (
-          <Button key={time} onClick={() => setSelectedTime(time)}>
-            {time}
+        {data?.data?.map((slot) => (
+          <Button
+            id={slot.id}
+            key={slot.id}
+            onClick={() => setSelectedTime(slot.start_time)}
+          >
+            {new Date(slot.start_time).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
           </Button>
         ))}
       </div>
@@ -95,7 +104,7 @@ const Appointment = () => {
             placeholder="Unesite broj telefona"
             readOnly
             className="border p-2 rounded focus:outline-none"
-            value={number}
+            value={number || ""}
           />
           <label className="font-['Montserrat'] pt-4 text-[#2E2E2E]">
             Vaša email adresa:
@@ -105,7 +114,7 @@ const Appointment = () => {
             placeholder="Unesite email"
             readOnly
             className="border p-2 rounded focus:outline-none"
-            value={email}
+            value={email || ""}
           />
           <label className="font-['Montserrat'] pt-4 text-[#2E2E2E]">
             Datum:
@@ -115,7 +124,7 @@ const Appointment = () => {
             placeholder="Izaberite datum"
             readOnly
             className="border p-2 rounded focus:outline-none"
-            value={selectedDate}
+            value={selectedDate || ""}
           />
           <label className="font-['Montserrat'] pt-4 text-[#2E2E2E]">
             Termin:
@@ -125,7 +134,12 @@ const Appointment = () => {
             placeholder="Izaberite termin"
             readOnly
             className="border p-2 rounded focus:outline-none"
-            value={selectedTime}
+            value={
+              new Date(selectedTime).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              }) || ""
+            }
           />
 
           <Button
