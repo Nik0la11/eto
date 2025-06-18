@@ -8,6 +8,7 @@ import { useEffect } from "react";
 
 const Appointment = () => {
   const [selectedTime, setSelectedTime] = useState(null);
+  const [selectedSlotID, setSelectedSlotID] = useState(null);
   const [selectedDate, setSelectedDate] = useState(
     new Date().toISOString().split("T")[0]
   );
@@ -20,7 +21,7 @@ const Appointment = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ date: selectedDate }),
+
       credentials: "include",
     })
       .then((res) => res.json())
@@ -49,6 +50,24 @@ const Appointment = () => {
   const surname = searchParams.get("surname");
   const number = searchParams.get("number");
 
+  const handleBooking = async () => {
+    try {
+      const res = await fetch(
+        `${BASE_URL}/v1/appointment/book/${selectedSlotID}`,
+        {
+          method: "POST",
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error("Booking failed");
+      }
+      const result = await res.json();
+      console.log("Booking result:", result);
+    } catch (err) {
+      console.log("Error:", err);
+    }
+  };
   return (
     <div className="w-3/4 m-auto bg-[#E5E4DF]">
       <div>
@@ -73,7 +92,10 @@ const Appointment = () => {
           <Button
             id={slot.id}
             key={slot.id}
-            onClick={() => setSelectedTime(slot.start_time)}
+            onClick={() => {
+              setSelectedTime(slot.start_time);
+              setSelectedSlotID(slot.id);
+            }}
           >
             {new Date(slot.start_time).toLocaleTimeString([], {
               hour: "2-digit",
@@ -144,6 +166,7 @@ const Appointment = () => {
 
           <Button
             className={`self-center mt-4 ${selectedTime ? "visible" : "invisible"}`}
+            onClick={handleBooking}
           >
             Zakaži
           </Button>
