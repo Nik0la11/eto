@@ -5,19 +5,49 @@ import { useRouter } from "next/navigation";
 import Button from "../components/Button";
 import Footer from "../components/Footer";
 import { useState } from "react";
-import Link from "next/link";
+
 const SignIn = () => {
   const route = useRouter();
+  const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [number, setNumber] = useState("");
+  const [password, setPassword] = useState("");
+  const [password2, setPassword2] = useState("");
 
   const handleSignIn = () => {
     route.push("/signIn");
   };
 
+  const handleRegistration = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch(`${BASE_URL}/v1/authentication/user`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Booking failed");
+      }
+
+      const result = await res.json();
+      console.log("Booking result:", result);
+
+      route.push("/");
+    } catch (err) {
+      console.log("Error:", err);
+    }
+  };
   return (
     <div>
       <div className="bg-[#FAF9F6] pb-24">
@@ -56,7 +86,7 @@ const SignIn = () => {
             <h3 className="text-2xl font-['Montserrat'] font-bold pb-2 text-[#2E2E2E]">
               Registracija
             </h3>
-            <form className="flex flex-col gap-2">
+            <form className="flex flex-col gap-2" onSubmit={handleRegistration}>
               <p className="font-['Montserrat'] pt-4 text-[#2E2E2E]">
                 E-mail adresa
               </p>
@@ -112,6 +142,7 @@ const SignIn = () => {
                     name="password"
                     className="border p-2 rounded focus:outline-none flex-1"
                     required
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
                 <div className="flex flex-col gap-2">
@@ -123,23 +154,13 @@ const SignIn = () => {
                     name="password2"
                     className="border p-2 rounded focus:outline-none flex-1"
                     required
+                    onChange={(e) => setPassword2(e.target.value)}
                   />
                 </div>
               </div>
               <div className="flex justify-center items-center gap-20">
-                <Link
-                  href={{
-                    pathname: "/",
-                    query: {
-                      email: email,
-                      name: name,
-                      surname: surname,
-                      number: number,
-                    },
-                  }}
-                >
-                  <Button className="flex-1">Registracija</Button>
-                </Link>
+                <Button className="flex-1">Registracija</Button>
+
                 <label className="flex justify-center items-center gap-1">
                   <input type="checkbox" />
                   <span className="font-['Montserrat'] text-[#2E2E2E]">
