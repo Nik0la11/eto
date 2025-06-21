@@ -10,6 +10,11 @@ import { UserIcon } from "@heroicons/react/24/outline";
 
 const SignIn = () => {
   const [logedIn, setLogedIn] = useState(true);
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [data, setData] = useState(null);
+
+  const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
   const route = useRouter();
 
@@ -21,6 +26,32 @@ const SignIn = () => {
     route.push("/registration");
   };
 
+  const handleSignIn = async (e) => {
+    e.preventDefault(e);
+    try {
+      const res = await fetch(`${BASE_URL}/v1/authentication/token`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Sign in failed");
+      }
+
+      const result = await res.json();
+      setData(result);
+      console.log("Sign in result:", result);
+      route.push("/");
+    } catch (err) {
+      console.log("Error:", err);
+    }
+  };
   return (
     <div>
       <div className="bg-[#FAF9F6] h-screen">
@@ -59,7 +90,7 @@ const SignIn = () => {
             <h3 className="text-2xl font-['Montserrat'] font-bold pb-2">
               Prijava
             </h3>
-            <form className="flex flex-col gap-2">
+            <form className="flex flex-col gap-2" onSubmit={handleSignIn}>
               <p className="font-['Montserrat'] text-[#2E2E2E]">
                 E-mail adresa
               </p>
@@ -67,6 +98,8 @@ const SignIn = () => {
                 type="mail"
                 name="mail"
                 className="border p-2 rounded"
+                value={email || ""}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
               <div className="flex">
@@ -81,22 +114,15 @@ const SignIn = () => {
                 type="password"
                 name="password"
                 className="border p-2 rounded focus:outline-none"
+                value={password || ""}
+                onChange={(e) => setPassword(e.target.value)}
                 required
               />
               <div className="flex">
-                <Link
-                  href={{
-                    pathname: "/",
-                    query: {
-                      logedIn: logedIn,
-                    },
-                  }}
-                >
-                  <Button className="flex gap-2">
-                    <UserIcon className="h-6 w-6 text-black-600" />
-                    <p>Prijava</p>
-                  </Button>
-                </Link>
+                <Button className="flex gap-2">
+                  <UserIcon className="h-6 w-6 text-black-600" />
+                  <p>Prijava</p>
+                </Button>
               </div>
             </form>
             <p className="font-['Montserrat'] text-[#D4AF37] mt-2">

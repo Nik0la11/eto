@@ -37,11 +37,11 @@ const SignIn = () => {
       });
 
       if (!res.ok) {
-        throw new Error("Booking failed");
+        throw new Error("Registration failed");
       }
 
       const result = await res.json();
-      console.log("Booking result:", result);
+      console.log("Registration result:", result);
 
       route.push("/");
     } catch (err) {
