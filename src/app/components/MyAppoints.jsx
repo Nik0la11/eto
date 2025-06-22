@@ -5,6 +5,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 import { UserIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
+import React from "react";
 
 const MyAppoints = ({ appointment, setAppointment }) => {
   const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
@@ -79,7 +80,7 @@ const MyAppoints = ({ appointment, setAppointment }) => {
               </div>
 
               {data?.data?.map((appointment) => (
-                <>
+                <React.Fragment key={appointment.id}>
                   <div className="h-12 grow bg-[#E5E4DF] font-['Montserrat'] font-semibold flex justify-center items-center">
                     {appointment.id}
                   </div>
@@ -102,7 +103,7 @@ const MyAppoints = ({ appointment, setAppointment }) => {
                   <div className="h-12 grow bg-[#E5E4DF] font-['Montserrat'] font-semibold flex justify-center items-center">
                     Status
                   </div>
-                </>
+                </React.Fragment>
               ))}
             </div>
 
@@ -114,7 +115,7 @@ const MyAppoints = ({ appointment, setAppointment }) => {
                   </h1>
                 </div>
 
-                <div className="grid grid-cols-4 gap-2">
+                <div className="grid grid-cols-4 gap-2 ">
                   <div className="h-12 grow bg-[#E5E4DF] font-['Montserrat'] font-semibold flex justify-center items-center">
                     #
                   </div>
@@ -128,23 +129,35 @@ const MyAppoints = ({ appointment, setAppointment }) => {
                     Status
                   </div>
                 </div>
+              </div>
 
-                <div className="my-2"></div>
-              </div>
-              <div className="flex justify-end gap-2">
-                {
+              {token === null ? null : (
+                <div className="flex justify-end gap-2 mt-8">
+                  {token ? (
+                    <Button
+                      onClick={handleSignIn}
+                      className="place-self-end flex gap-2"
+                    >
+                      <p>Odjavi se</p>
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={handleSignIn}
+                      className="place-self-end flex gap-2"
+                    >
+                      <UserIcon className="h-6 w-6 text-black-600" />
+                      <p>Prijavi se</p>
+                    </Button>
+                  )}
+
                   <Button
-                    onClick={handleSignIn}
-                    className="place-self-end flex gap-2"
+                    onClick={handleAppointment}
+                    className="place-self-end"
                   >
-                    <UserIcon className="h-6 w-6 text-black-600" />
-                    <p>Prijavi se</p>
+                    Zatvori
                   </Button>
-                }
-                <Button onClick={handleAppointment} className="place-self-end">
-                  Zatvori
-                </Button>
-              </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -8,6 +8,7 @@ import {
 import { Instagram } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 const HomePage = ({ appointment, setAppointment }) => {
   const router = useRouter();
@@ -36,12 +37,24 @@ const HomePage = ({ appointment, setAppointment }) => {
         <h1 className="py-2">Logo</h1>
       </div>
       <div className="flex items-center justify-center gap-2 py-4">
-        <Button onClick={handleAppointment}>
-          <div className="flex items-center gap-2 justify-center">
-            <CalendarDaysIcon className="h-6 w-6 text-black-600" />
-            <p>Zakazivanje</p>
-          </div>
-        </Button>
+        {token ? (
+          <Link href="#appointment">
+            <Button>
+              <div className="flex items-center gap-2 justify-center">
+                <CalendarDaysIcon className="h-6 w-6 text-black-600" />
+                <p>Zakazivanje</p>
+              </div>
+            </Button>
+          </Link>
+        ) : (
+          <Button onClick={handleAppointment}>
+            <div className="flex items-center gap-2 justify-center">
+              <CalendarDaysIcon className="h-6 w-6 text-black-600" />
+              <p>Zakazivanje</p>
+            </div>
+          </Button>
+        )}
+
         <Button>
           <div
             className="flex items-center gap-2 justify-center"
