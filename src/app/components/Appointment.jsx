@@ -39,7 +39,7 @@ const Appointment = () => {
   const getNextThreeDays = () => {
     const dates = [];
 
-    for (let i = 0; i < 3; i++) {
+    for (let i = 1; i < 4; i++) {
       const date = new Date();
 
       date.setDate(date.getDate() + i);

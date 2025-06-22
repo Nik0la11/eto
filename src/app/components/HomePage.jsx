@@ -28,6 +28,12 @@ const HomePage = ({ appointment, setAppointment }) => {
     setToken(storedToken);
   }, []);
 
+  const handleSignOut = () => {
+    localStorage.removeItem("token");
+    router.push("/");
+    window.location.reload();
+  };
+
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-[#E5E4DF]">
       <div className="flex flex-col items-center">
@@ -73,7 +79,10 @@ const HomePage = ({ appointment, setAppointment }) => {
         </Button>
       </div>
       {token ? (
-        <Button className={`flex items-center gap-2 justify-center `}>
+        <Button
+          onClick={handleSignOut}
+          className={`flex items-center gap-2 justify-center `}
+        >
           <div>
             <p>Odjava</p>
           </div>

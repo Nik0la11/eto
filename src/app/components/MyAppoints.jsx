@@ -16,10 +16,10 @@ const MyAppoints = ({ appointment, setAppointment }) => {
     setAppointment(true);
   };
 
-  const route = useRouter();
+  const router = useRouter();
 
   const handleSignIn = () => {
-    route.push("/signIn");
+    router.push("/signIn");
   };
 
   useEffect(() => {
@@ -42,6 +42,12 @@ const MyAppoints = ({ appointment, setAppointment }) => {
       .then((json) => setData(json))
       .catch((err) => console.log("Error fetching data:", err));
   }, [token]);
+
+  const handleSignOut = () => {
+    localStorage.removeItem("token");
+    router.push("/");
+    window.location.reload();
+  };
 
   return (
     <div
@@ -135,7 +141,7 @@ const MyAppoints = ({ appointment, setAppointment }) => {
                 <div className="flex justify-end gap-2 mt-8">
                   {token ? (
                     <Button
-                      onClick={handleSignIn}
+                      onClick={handleSignOut}
                       className="place-self-end flex gap-2"
                     >
                       <p>Odjavi se</p>
