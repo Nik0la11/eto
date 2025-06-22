@@ -3,16 +3,15 @@
 import Button from "./Button";
 import React from "react";
 import { useState } from "react";
-import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
 const Appointment = () => {
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedSlotID, setSelectedSlotID] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(
-    new Date().toISOString().split("T")[0]
-  );
+  const [day, setDay] = useState(new Date().toISOString().split("T")[0]);
   const [data, setData] = useState(null);
+  const [token, setToken] = useState(null);
+
   const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
   useEffect(() => {
@@ -21,14 +20,21 @@ const Appointment = () => {
       headers: {
         "Content-Type": "application/json",
       },
-
+      body: JSON.stringify({
+        day,
+      }),
       credentials: "include",
     })
       .then((res) => res.json())
       .then((json) => setData(json))
       .catch((err) => console.error("Error fetching data: ", err));
-  }, [selectedDate]);
+  }, [day]);
 
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+
+    setToken(storedToken);
+  }, []);
   const getNextThreeDays = () => {
     const dates = [];
 
@@ -43,19 +49,16 @@ const Appointment = () => {
 
   const dates = getNextThreeDays();
 
-  const searchParams = useSearchParams();
-
-  const email = searchParams.get("email");
-  const name = searchParams.get("name");
-  const surname = searchParams.get("surname");
-  const number = searchParams.get("number");
-
   const handleBooking = async () => {
     try {
       const res = await fetch(
         `${BASE_URL}/v1/appointment/book/${selectedSlotID}`,
         {
           method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
         }
       );
 
@@ -77,7 +80,7 @@ const Appointment = () => {
 
         <select
           className="w-full m-auto p-4 text-[#444545] font-['Montserrat']"
-          onChange={(e) => setSelectedDate(e.target.value)}
+          onChange={(e) => setDay(e.target.value)}
         >
           {dates.map((date) => (
             <option key={date} value={date}>
@@ -116,7 +119,7 @@ const Appointment = () => {
             placeholder="Unesite ime i prezime"
             readOnly
             className="border p-2 rounded focus:outline-none"
-            value={`${name || ""} ${surname || ""}`.trim()}
+            value={""}
           />
           <label className="font-['Montserrat'] pt-4 text-[#2E2E2E]">
             Vaš broj telefona:
@@ -126,7 +129,7 @@ const Appointment = () => {
             placeholder="Unesite broj telefona"
             readOnly
             className="border p-2 rounded focus:outline-none"
-            value={number || ""}
+            value={""}
           />
           <label className="font-['Montserrat'] pt-4 text-[#2E2E2E]">
             Vaša email adresa:
@@ -136,7 +139,7 @@ const Appointment = () => {
             placeholder="Unesite email"
             readOnly
             className="border p-2 rounded focus:outline-none"
-            value={email || ""}
+            value={""}
           />
           <label className="font-['Montserrat'] pt-4 text-[#2E2E2E]">
             Datum:
@@ -146,7 +149,7 @@ const Appointment = () => {
             placeholder="Izaberite datum"
             readOnly
             className="border p-2 rounded focus:outline-none"
-            value={selectedDate || ""}
+            value={day || ""}
           />
           <label className="font-['Montserrat'] pt-4 text-[#2E2E2E]">
             Termin:

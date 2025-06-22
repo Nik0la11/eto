@@ -28,6 +28,7 @@ const SignIn = () => {
 
   const handleSignIn = async (e) => {
     e.preventDefault(e);
+
     try {
       const res = await fetch(`${BASE_URL}/v1/authentication/token`, {
         method: "POST",
@@ -44,8 +45,10 @@ const SignIn = () => {
         throw new Error("Sign in failed");
       }
 
+      console.log("signed in");
       const result = await res.json();
       setData(result);
+      localStorage.setItem("token", result.data);
       console.log("Sign in result:", result);
       route.push("/");
     } catch (err) {
