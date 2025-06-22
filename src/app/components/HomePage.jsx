@@ -7,9 +7,11 @@ import {
 } from "@heroicons/react/24/outline";
 import { Instagram } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const HomePage = ({ appointment, setAppointment }) => {
   const router = useRouter();
+  const [token, setToken] = useState(null);
 
   const handleAppointment = () => {
     router.push("/signIn");
@@ -18,6 +20,13 @@ const HomePage = ({ appointment, setAppointment }) => {
   const handleMyAppoints = () => {
     setAppointment(false);
   };
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+
+    setToken(storedToken);
+  }, []);
+
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-[#E5E4DF]">
       <div className="flex flex-col items-center">
@@ -50,12 +59,13 @@ const HomePage = ({ appointment, setAppointment }) => {
           <Instagram size={24} />
         </Button>
       </div>
-
-      <Button className={`flex items-center gap-2 justify-center `}>
-        <div>
-          <p>Odjava</p>
-        </div>
-      </Button>
+      {token ? (
+        <Button className={`flex items-center gap-2 justify-center `}>
+          <div>
+            <p>Odjava</p>
+          </div>
+        </Button>
+      ) : null}
 
       <p className="text-xl text-[#2E2E2E]">Usluge koje vrsi frizerski salon</p>
     </div>

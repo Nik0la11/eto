@@ -27,7 +27,7 @@ const SignIn = () => {
   };
 
   const handleSignIn = async (e) => {
-    e.preventDefault(e);
+    e.preventDefault();
 
     try {
       const res = await fetch(`${BASE_URL}/v1/authentication/token`, {

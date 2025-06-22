@@ -11,11 +11,12 @@ const SignIn = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
   const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
-  const [surname, setSurname] = useState("");
+  const [first_name, setFirstName] = useState("");
+  const [last_name, setLastName] = useState("");
   const [number, setNumber] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
+  const username = "draza picka1";
 
   const handleSignIn = () => {
     route.push("/signIn");
@@ -30,7 +31,9 @@ const SignIn = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name,
+          first_name,
+          last_name,
+          username,
           email,
           password,
         }),
@@ -117,8 +120,8 @@ const SignIn = () => {
                     type="name"
                     name="name"
                     className="border p-2 rounded focus:outline-none flex-1"
-                    value={name || ""}
-                    onChange={(e) => setName(e.target.value)}
+                    value={first_name || ""}
+                    onChange={(e) => setFirstName(e.target.value)}
                     required
                   />
                 </div>
@@ -128,8 +131,8 @@ const SignIn = () => {
                     type="name"
                     name="surname"
                     className="border p-2 rounded focus:outline-none flex-1"
-                    value={surname || ""}
-                    onChange={(e) => setSurname(e.target.value)}
+                    value={last_name || ""}
+                    onChange={(e) => setLastName(e.target.value)}
                     required
                   />
                 </div>
