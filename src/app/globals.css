@@ -43,3 +43,32 @@ html {
   z-index: 0 !important;
   position: relative !important;
 }
+
+.primary-color {
+  color: #3b82f6;
+}
+
+.bg-color {
+  background-color: #f9fafb;
+}
+
+.text-p-color {
+  color: #111827;
+}
+
+.text-s-color {
+  color: #6b7280;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+}
+
+.no-scroll {
+  overflow: hidden !important;
+  height: 100vh;
+}
+
+.no-scroll::-webkit-scrollbar {
+  display: none;
+}
