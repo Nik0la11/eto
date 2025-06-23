@@ -10,6 +10,10 @@
     "email": "email dev"
   },
   "dependencies": {
+    "@fullcalendar/daygrid": "^6.1.17",
+    "@fullcalendar/interaction": "^6.1.17",
+    "@fullcalendar/react": "^6.1.17",
+    "@fullcalendar/timegrid": "^6.1.17",
     "@heroicons/react": "^2.2.0",
     "@iconify/react": "^6.0.0",
     "@react-email/components": "0.1.0",
