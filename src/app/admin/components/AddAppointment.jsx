@@ -2,9 +2,13 @@
 import AdminButton from "./AdminButton";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useClick } from "./Context";
+import { useDate } from "./Context";
 
-const AddAppointment = ({ privacy, setPrivacy }) => {
+const AddAppointment = () => {
   const { isClicked, setIsClicked } = useClick();
+  const { date, setDate } = useDate();
+
+  const onlyDate = new Date().toISOString().split("T")[0];
 
   const handleIsClicked = () => {
     setIsClicked(true);
@@ -16,20 +20,42 @@ const AddAppointment = ({ privacy, setPrivacy }) => {
     >
       <div className=" bg-[#FAF9F6] sm:w-1/2 sm:min-w-[400px] w-[400px] m-auto p-4">
         <div className="flex my-2">
-          <h1 className="uppercase font-bold text-[#D4AF37] text-3xl flex-1">
-            Politika privatnosti
+          <h1 className="font-bold primary-color text-3xl flex-1">
+            Dodaj termin
           </h1>
           <XMarkIcon
             className="h-6 w-6 cursor-pointer text-black-600  hover:text-black-900"
             onClick={handleIsClicked}
           />
         </div>
-        <div className="my-2">Ovdje idu ta pravila i sve to</div>
-        <div className="flex justify-end ">
-          {" "}
-          <AdminButton onClick={handleIsClicked} className="place-self-end">
-            Zatvori
-          </AdminButton>
+        <div className="flex justify-center">
+          <p className="text-xl m-auto">Datum: {onlyDate}</p>
+        </div>
+
+        <div className="my-2">
+          <form
+            action=""
+            className="flex flex-col gap-y-2 my-2 items-left  justify-left"
+          >
+            <label className="text-p-color">Početak termina:</label>
+            <input
+              type="time"
+              name="start"
+              className="border p-1 rounded-lg focus:outline-none"
+            />
+            <label className="text-p-color">Kraj termina:</label>
+            <input
+              type="time"
+              name="end"
+              className="border p-1 rounded-lg focus:outline-none"
+            />
+            <AdminButton
+              onClick={handleIsClicked}
+              className="place-self-end mt-8"
+            >
+              Dodaj
+            </AdminButton>
+          </form>
         </div>
       </div>
     </div>

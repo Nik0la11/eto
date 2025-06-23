@@ -1,4 +1,3 @@
-import HomePage from "./HomePage";
 import WorkingHoursPage from "./WorkingHoursPage";
 import Services from "./Services";
 import Location from "./Location";

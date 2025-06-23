@@ -5,16 +5,22 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import listPlugin from "@fullcalendar/list";
 import { useClick } from "./Context";
+import { useDate } from "./Context";
+import srLatinLocale from "../sr-latin";
 
 export default function Calendar() {
   const [day, setDay] = useState(new Date().toISOString().slice(0, 10));
   const [events, setEvents] = useState([]);
   const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
   const { isClicked, setIsClicked } = useClick();
+  const { date, setDate } = useDate();
 
   const handleDateClick = (arg) => {
     setIsClicked(false);
+    setDate(arg.dateStr);
+    console.log(arg.dateStr);
   };
 
   const handleEventClick = (clickInfo) => {
@@ -53,7 +59,7 @@ export default function Calendar() {
   return (
     <div className="h-full w-full overflow-hidden">
       <FullCalendar
-        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
         initialView="dayGridMonth"
         height="100%"
         headerToolbar={{
@@ -61,6 +67,8 @@ export default function Calendar() {
           center: "title",
           right: "dayGridMonth,timeGridWeek,timeGridDay",
         }}
+        locales={[srLatinLocale]}
+        locale="sr-Latn"
         events={events}
         dateClick={handleDateClick}
         eventClick={handleEventClick}
