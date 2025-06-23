@@ -1,7 +1,7 @@
 import Header from "./components/Header";
 import SideBar from "./components/SideBar";
 import AdminContent from "./components/AdminContent";
-import AddAppointment from "./components/AddAppointment";
+import AddAppointment from "./components/AddApponitment";
 export default function Home() {
   return (
     <div>

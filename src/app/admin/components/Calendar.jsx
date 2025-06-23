@@ -18,6 +18,7 @@ export default function Calendar() {
   const { date, setDate } = useDate();
 
   const handleDateClick = (arg) => {
+    console.log(arg);
     setIsClicked(false);
     setDate(arg.dateStr);
     console.log(arg.dateStr);
