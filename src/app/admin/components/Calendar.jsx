@@ -9,10 +9,12 @@ import listPlugin from "@fullcalendar/list";
 import { useClick } from "./Context";
 import { useDate } from "./Context";
 import srLatinLocale from "../sr-latin";
+import { useRef } from "react";
 
 export default function Calendar() {
-  const [day, setDay] = useState(new Date().toISOString().slice(0, 10));
   const [events, setEvents] = useState([]);
+  const lastFetchedDate = useRef(null);
+
   const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
   const { isClicked, setIsClicked } = useClick();
   const { date, setDate } = useDate();
@@ -21,33 +23,29 @@ export default function Calendar() {
     console.log(arg);
     setIsClicked(false);
     setDate(arg.dateStr);
-    console.log(arg.dateStr);
   };
 
   const handleEventClick = (clickInfo) => {
     alert("Event: " + clickInfo.event.title);
   };
 
-  useEffect(() => {
-    fetch(`${BASE_URL}/v1/appointment/get_available_dates`, {
+  const fetchEvents = (formattedDate) => {
+    fetch(`${BASE_URL}/v1/admin/get_calendar`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ day }),
+      body: JSON.stringify({ formattedDate }),
       credentials: "include",
     })
       .then((res) => res.json())
       .then((json) => {
         if (json && json.data) {
           const mappedEvents = json.data.map((slot) => ({
-            id: slot.id,
             start: slot.start_time,
             end: new Date(
               new Date(slot.start_time).getTime() + 30 * 60 * 1000
             ).toISOString(),
-            extendedProps: {
-              user: slot.user,
-              isBooked: slot.is_booked,
-            },
+            allDay: true,
+            title: `${slot.booked_slots} zakazanih`,
           }));
           setEvents(mappedEvents);
         } else {
@@ -55,7 +53,7 @@ export default function Calendar() {
         }
       })
       .catch((err) => console.error("Error fetching data: ", err));
-  }, []);
+  };
 
   return (
     <div className="h-full w-full overflow-hidden">
@@ -77,6 +75,12 @@ export default function Calendar() {
         editable={true}
         selectMirror={true}
         dayMaxEvents={true}
+        datesSet={(arg) => {
+          const viewStart = arg.start.toISOString().slice(0, 10);
+          if (lastFetchedDate.current === viewStart) return;
+          lastFetchedDate.current = viewStart;
+          fetchEvents(viewStart);
+        }}
       />
     </div>
   );
