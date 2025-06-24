@@ -14,7 +14,9 @@ import { useRef } from "react";
 export default function Calendar() {
   const [events, setEvents] = useState([]);
   const lastFetchedDate = useRef(null);
-
+  const lastFetchedDay = useRef(null);
+  const lastViewType = useRef(null);
+  const [day, setDay] = useState(null);
   const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
   const { isClicked, setIsClicked } = useClick();
   const { date, setDate } = useDate();
@@ -54,6 +56,30 @@ export default function Calendar() {
       })
       .catch((err) => console.error("Error fetching data: ", err));
   };
+  useEffect(() => {
+    if (!day) return;
+    fetch(`${BASE_URL}/v1/admin/get_booked_dates`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ day }),
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        if (json && json.data) {
+          const mappedEvents = json.data.map((slot) => ({
+            start: slot.start_time,
+            end: new Date(
+              new Date(slot.start_time).getTime() + 30 * 60 * 1000
+            ).toISOString(),
+          }));
+          setEvents(mappedEvents);
+        } else {
+          setEvents([]);
+        }
+      })
+      .catch((err) => console.error("Error fetching data: ", err));
+  }, [day]);
 
   return (
     <div className="h-full w-full overflow-hidden">
@@ -77,9 +103,26 @@ export default function Calendar() {
         dayMaxEvents={true}
         datesSet={(arg) => {
           const viewStart = arg.start.toISOString().slice(0, 10);
-          if (lastFetchedDate.current === viewStart) return;
-          lastFetchedDate.current = viewStart;
-          fetchEvents(viewStart);
+          const viewType = arg.view.type;
+
+          if (viewType === "dayGridMonth" || viewType === "timeGridWeek") {
+            setDay(null);
+            lastFetchedDay.current = null;
+            if (lastFetchedDate.current === viewStart) {
+              return;
+            } else {
+              lastFetchedDate.current = viewStart;
+              fetchEvents(viewStart);
+            }
+          } else if (viewType === "timeGridDay" || viewType === "dayGridDay") {
+            const currentDayStr = arg.start.toLocaleDateString("sv-SE");
+            lastFetchedDate.current = null;
+            console.log(currentDayStr);
+
+            if (lastFetchedDay.current === currentDayStr) return;
+            lastFetchedDay.current = currentDayStr;
+            setDay(currentDayStr);
+          }
         }}
       />
     </div>
