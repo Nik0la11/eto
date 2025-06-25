@@ -20,6 +20,9 @@ export default function Calendar() {
   const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
   const { isClicked, setIsClicked } = useClick();
   const { date, setDate } = useDate();
+  const [token, setToken] = useState();
+  const calendarRef = useRef(null);
+  const [readyToFetch, setReadyToFetch] = useState(false);
 
   const handleDateClick = (arg) => {
     console.log(arg);
@@ -32,9 +35,13 @@ export default function Calendar() {
   };
 
   const fetchEvents = (formattedDate) => {
+    if (!token) return;
     fetch(`${BASE_URL}/v1/admin/get_calendar`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({ formattedDate }),
       credentials: "include",
     })
@@ -56,11 +63,50 @@ export default function Calendar() {
       })
       .catch((err) => console.error("Error fetching data: ", err));
   };
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) setToken(storedToken);
+  }, []);
+
+  useEffect(() => {
+    if (token && calendarRef.current) {
+      setReadyToFetch(true);
+    }
+  }, [token, calendarRef.current]);
+
+  useEffect(() => {
+    if (!token || !calendarRef.current) return;
+
+    const calendarApi = calendarRef.current.getApi();
+    const currentStart = calendarApi.view.currentStart
+      .toISOString()
+      .slice(0, 10);
+
+    if (lastFetchedDate.current !== currentStart) {
+      lastFetchedDate.current = currentStart;
+      fetchEvents(currentStart);
+    }
+  }, [token]);
+
+  useEffect(() => {
+    if (!readyToFetch) return;
+    const calendarApi = calendarRef.current.getApi();
+    const currentStart = calendarApi.view.currentStart
+      .toISOString()
+      .slice(0, 10);
+    lastFetchedDate.current = currentStart;
+    fetchEvents(currentStart);
+  }, [readyToFetch]);
+
   useEffect(() => {
     if (!day) return;
     fetch(`${BASE_URL}/v1/admin/get_booked_dates`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({ day }),
       credentials: "include",
     })
@@ -84,6 +130,7 @@ export default function Calendar() {
   return (
     <div className="h-full w-full overflow-hidden">
       <FullCalendar
+        ref={calendarRef}
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
         initialView="dayGridMonth"
         height="100%"

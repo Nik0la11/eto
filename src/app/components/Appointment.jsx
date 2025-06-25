@@ -13,6 +13,7 @@ const Appointment = () => {
   const [token, setToken] = useState(null);
 
   const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+  const worker_id = 20;
 
   useEffect(() => {
     fetch(`${BASE_URL}/v1/appointment/get_available_dates`, {
@@ -22,6 +23,7 @@ const Appointment = () => {
       },
       body: JSON.stringify({
         day,
+        worker_id,
       }),
       credentials: "include",
     })
@@ -53,7 +55,7 @@ const Appointment = () => {
   const handleBooking = async () => {
     try {
       const res = await fetch(
-        `${BASE_URL}/v1/appointment/book/${selectedSlotID}`,
+        `${BASE_URL}/v1/appointment/book/${worker_id}/${selectedSlotID}`,
         {
           method: "POST",
           headers: {
