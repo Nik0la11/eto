@@ -6,12 +6,16 @@ const ClickContext = createContext();
 const DateContext = createContext();
 const CalendarContext = createContext();
 const FreeAppointmentsContext = createContext();
+const ChooseContext = createContext();
+const ChosenDaysContext = createContext();
 
 export const ClickProvider = ({ children }) => {
   const [isClicked, setIsClicked] = useState(true);
   const [date, setDate] = useState(true);
   const [calendar, setCalendar] = useState(true);
-  const [freeAppointments, setFreeAppointments] = useState(true);
+  const [freeAppointments, setFreeAppointments] = useState(false);
+  const [isChooseClicked, setIsChooseClicked] = useState(true);
+  const [chosenDays, setChosenDays] = useState([]);
 
   return (
     <ClickContext.Provider value={{ isClicked, setIsClicked }}>
@@ -20,7 +24,13 @@ export const ClickProvider = ({ children }) => {
           <FreeAppointmentsContext.Provider
             value={{ freeAppointments, setFreeAppointments }}
           >
-            {children}
+            <ChooseContext.Provider
+              value={{ isChooseClicked, setIsChooseClicked }}
+            >
+              <ChosenDaysContext.Provider value={{ chosenDays, setChosenDays }}>
+                {children}
+              </ChosenDaysContext.Provider>
+            </ChooseContext.Provider>
           </FreeAppointmentsContext.Provider>
         </CalendarContext.Provider>
       </DateContext.Provider>
@@ -32,3 +42,5 @@ export const useClick = () => useContext(ClickContext);
 export const useDate = () => useContext(DateContext);
 export const useCalendar = () => useContext(CalendarContext);
 export const useFreeAppointments = () => useContext(FreeAppointmentsContext);
+export const useChoose = () => useContext(ChooseContext);
+export const useChosenDays = () => useContext(ChosenDaysContext);
