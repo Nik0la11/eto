@@ -1,16 +1,10 @@
-import { useWorkingHours } from "./Context";
+"use client";
 import AdminButton from "./AdminButton";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useChoose, useChosenDays, useClick } from "./Context";
 import { useState, useEffect } from "react";
 
 const WorkingHours = () => {
-  const { isChooseClicked, setIsChooseClicked } = useChoose();
-  const { chosenDays, setChosenDays } = useChosenDays([]);
-  const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
-  const [token, setToken] = useState();
-  const [data, setData] = useState();
-
   const backendDays = {
     monday: "",
     tuesday: "",
@@ -41,10 +35,14 @@ const WorkingHours = () => {
     Nedjelja: "sunday",
   };
 
+  const { chosenDays, setChosenDays } = useChosenDays([]);
+  const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+  const [token, setToken] = useState();
+  const [data, setData] = useState();
   const [appointmentDuration, setAppointmentDuration] = useState("");
-
   const [pauseBetween, setPauseBetween] = useState("");
 
+  // Initialize workingHours with days and empty start/end
   const [workingHours, setWorkingHours] = useState(
     Object.entries(backendDays).reduce((acc, [day]) => {
       acc[day] = { start: "", end: "" };
@@ -52,6 +50,60 @@ const WorkingHours = () => {
     }, {})
   );
 
+  // Load token on mount
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) setToken(storedToken);
+  }, []);
+
+  // Fetch work settings when token changes
+  useEffect(() => {
+    if (!token) return;
+
+    fetch(`${BASE_URL}/v1/admin/get_work_settings`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    })
+      .then((res) => res.json())
+
+      .then((json) => {
+        setData(json);
+
+        // Parse working hours
+        const parsed = Object.entries(backendDays).reduce((acc, [day]) => {
+          if (json.data.working_hours[day]) {
+            const range = json.data.working_hours[day];
+            const [start, end] = range.split("-");
+            acc[day] = { start, end };
+          } else {
+            acc[day] = { start: "", end: "" };
+          }
+          return acc;
+        }, {});
+
+        // Extract chosen days in Serbian
+        const daysPicked = Object.entries(parsed)
+          .filter(([day, hours]) => hours.start && hours.end)
+          .map(([engDay]) => {
+            return Object.entries(serbianToEnglish).find(
+              ([serbian, eng]) => eng === engDay
+            )?.[0];
+          })
+          .filter(Boolean);
+
+        setChosenDays(daysPicked);
+        setWorkingHours(parsed);
+        setAppointmentDuration(json.data.appointment_duration);
+        setPauseBetween(json.data.pause_between);
+      })
+      .catch((err) => console.error("Error fetching data: ", err));
+  }, [token]);
+
+  // Handler for checkbox toggle
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
 
@@ -65,11 +117,7 @@ const WorkingHours = () => {
     setWorkingHours((prev) => ({ ...prev, [engDay]: { start: "", end: "" } }));
   };
 
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) setToken(storedToken);
-  }, []);
-
+  // Handle form submission
   const handleSubmitForWorkingHours = async (e) => {
     e.preventDefault();
     const formattedWorkingHours = {};
@@ -98,49 +146,6 @@ const WorkingHours = () => {
       credentials: "include",
     }).catch((err) => console.error("Error fetching data: ", err));
   };
-
-  useEffect(() => {
-    if (!token) return;
-
-    fetch(`${BASE_URL}/v1/admin/get_work_settings`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    })
-      .then((res) => res.json())
-
-      .then((json) => {
-        setData(json);
-        const parsed = Object.entries(backendDays).reduce((acc, [day]) => {
-          if (json.data.working_hours[day]) {
-            const range = json.data.working_hours[day];
-            const [start, end] = range.split("-");
-            acc[day] = { start, end };
-          } else {
-            acc[day] = { start: "", end: "" };
-          }
-          return acc;
-        }, {});
-
-        const daysPicked = Object.entries(parsed)
-          .filter(([day, hours]) => hours.start && hours.end)
-          .map(([engDay]) => {
-            return Object.entries(serbianToEnglish).find(
-              ([serbian, eng]) => eng === engDay
-            )?.[0];
-          })
-          .filter(Boolean);
-
-        setChosenDays(daysPicked);
-        setWorkingHours(parsed);
-        setAppointmentDuration(json.data.appointment_duration);
-        setPauseBetween(json.data.pause_between);
-      })
-      .catch((err) => console.error("Error fetching data: ", err));
-  }, [token]);
 
   return (
     <div className=" h-full w-full overflow-hidden flex ">
@@ -207,7 +212,7 @@ const WorkingHours = () => {
                 <input
                   type="number"
                   className="rounded-md w-3/4"
-                  value={appointmentDuration}
+                  value={appointmentDuration || ""}
                   onChange={(e) => {
                     setAppointmentDuration(e.target.value);
                   }}
@@ -220,7 +225,7 @@ const WorkingHours = () => {
                 <input
                   type="number"
                   className="rounded-md w-3/4"
-                  value={pauseBetween}
+                  value={pauseBetween || ""}
                   onChange={(e) => {
                     setPauseBetween(e.target.value);
                   }}

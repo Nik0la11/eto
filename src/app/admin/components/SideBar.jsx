@@ -7,18 +7,21 @@ const SideBar = () => {
   const { freeAppointments, setFreeAppointments } = useFreeAppointments();
   const { workingHours, setWorkingHours } = useWorkingHours();
 
+  // handler for Calendar button
   const handleCalendar = () => {
     setCalendar(true);
     setFreeAppointments(false);
     setWorkingHours(false);
   };
 
+  // handler for FreeAppoints button
   const handleFreeAppoints = () => {
     setFreeAppointments(true);
     setCalendar(false);
     setWorkingHours(false);
   };
 
+  // handler for WorkingHours button
   const handleWorkingHours = () => {
     setWorkingHours(true);
     setFreeAppointments(false);

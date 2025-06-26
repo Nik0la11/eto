@@ -1,9 +1,8 @@
+"use client";
 import AdminButton from "./AdminButton";
 
-import { useFreeAppointments } from "./Context";
 const FreeAppointments = () => {
-  const { freeAppointments, setFreeAppointments } = useFreeAppointments();
-
+  // function to get next seven days
   const getNextSevenDays = () => {
     const dates = [];
 

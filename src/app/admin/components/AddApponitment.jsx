@@ -2,12 +2,9 @@
 import AdminButton from "./AdminButton";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useClick } from "./Context";
-import { useDate } from "./Context";
 
 const AddAppointment = () => {
   const { isClicked, setIsClicked } = useClick();
-  const { date, setDate } = useDate();
-
   const onlyDate = new Date().toISOString().split("T")[0];
 
   const handleIsClicked = () => {
