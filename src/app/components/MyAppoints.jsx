@@ -11,7 +11,7 @@ const MyAppoints = ({ appointment, setAppointment }) => {
   const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
   const [token, setToken] = useState(null);
   const [data, setData] = useState(null);
-
+  const worker_id = 20;
   const handleAppointment = () => {
     setAppointment(true);
   };

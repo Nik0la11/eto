@@ -1,6 +1,5 @@
 import AdminButton from "./AdminButton";
-import ChooseDays from "./ChooseDays";
-import { useChoose, useChosenDays } from "./Context";
+
 import { useFreeAppointments } from "./Context";
 const FreeAppointments = () => {
   const { freeAppointments, setFreeAppointments } = useFreeAppointments();
@@ -21,7 +20,7 @@ const FreeAppointments = () => {
   return (
     <div className={`h-full w-full overflow-hidden`}>
       <div className="h-3/5 w-full bg-[#E5E4E2] p-4 rounded-lg m-1 flex flex-col justtify-self-end ">
-        <h2 className="text-p-color text-2xl font-medium">Slobodni termini</h2>
+        <h2 className="font-bold primary-color text-3xl ">Slobodni termini</h2>
         <div className="flex flex-col">
           <select
             name=""
@@ -44,7 +43,7 @@ const FreeAppointments = () => {
       </div>
 
       <div className="w-full h-2/5 bg-[#E5E4E2] p-4 rounded-lg m-1 flex flex-col">
-        <h2 className="text-p-color text-2xl font-medium">Dodavanje termina</h2>
+        <h2 className="font-bold primary-color text-3xl ">Dodavanje termina</h2>
         <form action="" className="flex flex-col justify-start gap-4 my-4 ">
           <div className="flex flex-col gap-2">
             <label htmlFor="" className="text-p-color">
