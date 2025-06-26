@@ -3,20 +3,15 @@ import Button from "./Button";
 import { UserIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import { useToken } from "./Context";
 
 const Appointment2 = () => {
   const route = useRouter();
-  const [token, setToken] = useState(null);
+  const { token } = useToken();
 
   const handleSignIn = () => {
     route.push("/signIn");
   };
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-
-    setToken(storedToken);
-  }, []);
 
   return token ? null : (
     <div className={`my-8`}>

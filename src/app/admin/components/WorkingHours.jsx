@@ -211,7 +211,7 @@ const WorkingHours = () => {
                 </label>
                 <input
                   type="number"
-                  className="rounded-md w-3/4"
+                  className="rounded-md w-3/4 text-center"
                   value={appointmentDuration || ""}
                   onChange={(e) => {
                     setAppointmentDuration(e.target.value);
@@ -224,7 +224,7 @@ const WorkingHours = () => {
                 </label>
                 <input
                   type="number"
-                  className="rounded-md w-3/4"
+                  className="rounded-md w-3/4 text-center"
                   value={pauseBetween || ""}
                   onChange={(e) => {
                     setPauseBetween(e.target.value);

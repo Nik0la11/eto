@@ -13,11 +13,12 @@ const services = [
   { id: "location", label: "Lokacija" },
   { code: "r", label: "Pravilnik" },
   { code: "p", label: "Privatnost" },
-  { label: "Moji termini" },
+  { code: "m", label: "Moji termini" },
 ];
 import Link from "next/link";
 
 import { useState, useEffect } from "react";
+import { useToken } from "./Context";
 
 const useScreenSize = () => {
   const [screenSize, setScreenSize] = useState("lg");
@@ -43,11 +44,13 @@ const useScreenSize = () => {
 };
 
 const Header = () => {
+  const { token } = useToken();
   const [rules, setRules] = useState(true);
   const [privacy, setPrivacy] = useState(true);
   const [appointment, setAppointment] = useState(true);
   const screenSize = useScreenSize();
   const [list, setList] = useState(false);
+  const [hasMounted, setHasMounted] = useState(false);
 
   const handleRules = () => {
     setRules(false);
@@ -65,13 +68,18 @@ const Header = () => {
     setList((prev) => !prev);
   };
 
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  if (!hasMounted) return null;
   return (
     <div>
       {screenSize === "lg" ? (
         <div className="flex justify-center items-center p-8 mb-24 fixed z-50 top-0 left-0 w-full bg-[#E5E4DF] border-b border-gray-300">
           <ul className="flex gap-6">
             {services.map((service, index) =>
-              service.id ? (
+              service.code === "m" && !token ? null : service.id ? (
                 <Link href={`#${service.id}`} key={index}>
                   <StyledListItem key={index}>{service.label}</StyledListItem>
                 </Link>
@@ -120,7 +128,9 @@ const Header = () => {
                             ? handleRules
                             : service.code === "p"
                               ? handlePrivacy
-                              : handleAppointment
+                              : token
+                                ? handleAppointment
+                                : () => {}
                         }
                       >
                         <StyledListItem>{service.label}</StyledListItem>

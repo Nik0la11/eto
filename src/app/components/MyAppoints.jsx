@@ -6,10 +6,11 @@ import { useRouter } from "next/navigation";
 import { UserIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 import React from "react";
+import { useToken } from "./Context";
 
 const MyAppoints = ({ appointment, setAppointment }) => {
   const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
-  const [token, setToken] = useState(null);
+  const { token } = useToken();
   const [data, setData] = useState(null);
   const worker_id = 20;
   const handleAppointment = () => {
@@ -21,12 +22,6 @@ const MyAppoints = ({ appointment, setAppointment }) => {
   const handleSignIn = () => {
     router.push("/signIn");
   };
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-
-    setToken(storedToken);
-  }, []);
 
   useEffect(() => {
     if (!token) return;

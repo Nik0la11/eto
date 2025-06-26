@@ -4,18 +4,22 @@ import Button from "./Button";
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
+import { useToken } from "./Context";
 
 const Appointment = () => {
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedSlotID, setSelectedSlotID] = useState(null);
   const [day, setDay] = useState(new Date().toISOString().split("T")[0]);
   const [data, setData] = useState(null);
-  const [token, setToken] = useState(null);
+  const { token } = useToken();
+  const [hasMounted, setHasMounted] = useState(false);
 
   const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
   const worker_id = 20;
 
   useEffect(() => {
+    if (!token) return;
+
     fetch(`${BASE_URL}/v1/appointment/get_available_dates`, {
       method: "POST",
       headers: {
@@ -30,13 +34,7 @@ const Appointment = () => {
       .then((res) => res.json())
       .then((json) => setData(json))
       .catch((err) => console.error("Error fetching data: ", err));
-  }, [day]);
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-
-    setToken(storedToken);
-  }, []);
+  }, [day, token]);
 
   const getNextThreeDays = () => {
     const dates = [];
@@ -74,8 +72,15 @@ const Appointment = () => {
       console.log("Error:", err);
     }
   };
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  if (!hasMounted) return null;
+
   return token ? (
-    <div className="w-3/4 m-auto bg-[#E5E4DF] " id="appointment">
+    <div className="w-3/4 m-auto bg-[#E5E4DF]" id="appointment">
       <div>
         <h1 className="uppercase font-bold text-[#D4AF37] text-3xl  pt-24 pb-12">
           • Zakažite vaš termin

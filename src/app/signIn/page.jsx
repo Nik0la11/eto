@@ -7,20 +7,17 @@ import Footer from "../components/Footer";
 import { useState } from "react";
 import Link from "next/link";
 import { UserIcon } from "@heroicons/react/24/outline";
+import { useToken } from "../components/Context";
 
 const SignIn = () => {
   const [logedIn, setLogedIn] = useState(true);
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const [data, setData] = useState(null);
-
+  const { setToken } = useToken();
   const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
   const route = useRouter();
-
-  const handleHome = () => {
-    route.push("/");
-  };
 
   const handleRegistration = () => {
     route.push("/registration");
@@ -48,6 +45,7 @@ const SignIn = () => {
       console.log("signed in");
       const result = await res.json();
       setData(result);
+      setToken(result);
       localStorage.setItem("token", result.data);
       console.log("Sign in result:", result);
       route.push("/");

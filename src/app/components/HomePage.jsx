@@ -7,32 +7,38 @@ import {
 } from "@heroicons/react/24/outline";
 import { Instagram } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useToken } from "./Context";
+import { useState, useEffect } from "react";
 
 const HomePage = ({ appointment, setAppointment }) => {
   const router = useRouter();
-  const [token, setToken] = useState(null);
+  const { token } = useToken();
+  const [hasMounted, setHasMounted] = useState(false);
 
-  const handleAppointment = () => {
+  const handleSignIn = () => {
     router.push("/signIn");
+  };
+
+  const handleRegistration = () => {
+    router.push("/registration");
   };
 
   const handleMyAppoints = () => {
     setAppointment(false);
   };
 
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-
-    setToken(storedToken);
-  }, []);
-
   const handleSignOut = () => {
     localStorage.removeItem("token");
     router.push("/");
     window.location.reload();
   };
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  if (!hasMounted) return null;
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-[#E5E4DF]">
@@ -53,23 +59,33 @@ const HomePage = ({ appointment, setAppointment }) => {
             </Button>
           </Link>
         ) : (
-          <Button onClick={handleAppointment}>
+          <Button onClick={handleSignIn}>
             <div className="flex items-center gap-2 justify-center">
-              <CalendarDaysIcon className="h-6 w-6 text-black-600" />
-              <p>Zakazivanje</p>
+              <p>Prijava</p>
+            </div>
+          </Button>
+        )}
+        {token ? (
+          <Button>
+            <div
+              className="flex items-center gap-2 justify-center"
+              onClick={handleMyAppoints}
+            >
+              <UserIcon className="h-6 w-6 text-black-600" />
+              <p>Moji termini</p>
+            </div>
+          </Button>
+        ) : (
+          <Button>
+            <div
+              className="flex items-center gap-2 justify-center"
+              onClick={handleRegistration}
+            >
+              <p>Registracija</p>
             </div>
           </Button>
         )}
 
-        <Button>
-          <div
-            className="flex items-center gap-2 justify-center"
-            onClick={handleMyAppoints}
-          >
-            <UserIcon className="h-6 w-6 text-black-600" />
-            <p>Moji termini</p>
-          </div>
-        </Button>
         <Button
           onClick={() =>
             window.open("https://instagram.com/petroviic_05", "_blank")
