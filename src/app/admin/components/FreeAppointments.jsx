@@ -95,7 +95,7 @@ const FreeAppointments = () => {
             ))}
           </div>
         </div>
-        <AdminButton className="bg-red-500 hover:bg-red-600 w-1/6 ">
+        <AdminButton className="bg-red-500 hover:bg-red-600 text-p-color w-1/6 ">
           Izbriši termin
         </AdminButton>
       </div>
@@ -108,14 +108,14 @@ const FreeAppointments = () => {
               Datum:
             </label>
 
-            <input type="date" className="rounded-md w-1/5" />
+            <input type="date" className="rounded-md w-1/5 text-p-color" />
           </div>
           <div className="flex flex-col gap-2">
             <label htmlFor="" className="text-p-color">
               Pocetak termina:
             </label>
 
-            <input type="time" className="rounded-md w-1/5" />
+            <input type="time" className="rounded-md w-1/5 text-p-color" />
           </div>
           <AdminButton>Dodaj termin</AdminButton>
         </form>

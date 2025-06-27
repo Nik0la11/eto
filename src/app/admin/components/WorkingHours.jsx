@@ -192,7 +192,7 @@ const WorkingHours = () => {
                 >
                   <p className="text-p-color min-w-[100px]">{chosenDay}</p>
                   <div className="flex justify-center items-center gap-2 flex-grow">
-                    <label>od:</label>
+                    <label className="text-p-color">od:</label>
                     <input
                       type="time"
                       className="rounded-md text-p-color"
@@ -207,7 +207,7 @@ const WorkingHours = () => {
                         }));
                       }}
                     />
-                    <label>do:</label>
+                    <label className="text-p-color">do:</label>
                     <input
                       type="time"
                       className="rounded-md text-p-color"
@@ -278,7 +278,10 @@ const WorkingHours = () => {
           >
             {days.map((day) => (
               <div key={day} id={day} className="flex items-center gap-4">
-                <label htmlFor="" className="text-p-color text-2xl font-medium">
+                <label
+                  htmlFor=""
+                  className="text-p-color text-2xl font-medium min-w-[150px] "
+                >
                   {day}
                 </label>
                 <input
