@@ -4,6 +4,16 @@ import { useState, useEffect } from "react";
 import { useToken } from "@/app/components/Context";
 
 const FreeAppointments = () => {
+  const englishToSerbian = {
+    monday: "Ponedjeljak",
+    tuesday: "Utorak",
+    wednesday: "Sreda",
+    thursday: "Četvrtak",
+    friday: "Petak",
+    saturday: "Subota",
+    sunday: "Nedjelja",
+  };
+
   const [day, setDay] = useState(new Date().toISOString().split("T")[0]);
   const worker_id = 20;
   const [data, setData] = useState();
@@ -55,11 +65,24 @@ const FreeAppointments = () => {
             className="w-1/2 place-self-center p-2 rounded-md text-p-color"
             onChange={(e) => setDay(e.target.value)}
           >
-            {dates.map((date) => (
-              <option value={date} key={date}>
-                {new Date(date).toDateString()}
-              </option>
-            ))}
+            {dates.map((date) => {
+              const dayOfWeekEnglish = new Date(date)
+                .toLocaleDateString("en-US", { weekday: "long" })
+                .toLowerCase();
+              const serbianDay = englishToSerbian[dayOfWeekEnglish];
+
+              const formattedDate = new Date(date).toLocaleDateString("sr-RS", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+              });
+
+              return (
+                <option value={date} key={date}>
+                  {`${serbianDay} ${formattedDate}`}
+                </option>
+              );
+            })}
           </select>
           <div className="flex flex-wrap my-4 gap-2 justify-center">
             {data?.data?.map((slot) => (
@@ -79,7 +102,7 @@ const FreeAppointments = () => {
 
       <div className="w-full h-2/5 bg-[#E5E4E2] p-4 rounded-lg m-1 flex flex-col">
         <h2 className="font-bold primary-color text-3xl ">Dodavanje termina</h2>
-        <form action="" className="flex flex-col justify-start gap-4 my-4 ">
+        <form action="" className="flex flex-col justify-start gap-4 my-2 ">
           <div className="flex flex-col gap-2">
             <label htmlFor="" className="text-p-color">
               Datum:

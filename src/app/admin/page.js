@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <div>
       <Header />
-      <div className="flex w-full h-screen ">
+      <div className="flex w-full h-screen">
         <SideBar />
         <AdminContent />
       </div>

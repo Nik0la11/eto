@@ -7,6 +7,16 @@ import { useEffect } from "react";
 import { useToken } from "./Context";
 
 const Appointment = () => {
+  const englishToSerbian = {
+    monday: "Ponedjeljak",
+    tuesday: "Utorak",
+    wednesday: "Sreda",
+    thursday: "Četvrtak",
+    friday: "Petak",
+    saturday: "Subota",
+    sunday: "Nedjelja",
+  };
+
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedSlotID, setSelectedSlotID] = useState(null);
   const [day, setDay] = useState(new Date().toISOString().split("T")[0]);
@@ -90,11 +100,25 @@ const Appointment = () => {
           className="w-full m-auto p-4 text-[#444545] font-['Montserrat']"
           onChange={(e) => setDay(e.target.value)}
         >
-          {dates.map((date) => (
-            <option key={date} value={date}>
-              {new Date(date).toDateString()}
-            </option>
-          ))}
+          {dates.map((date) => {
+            const dayOfWeekEnglish = new Date(date)
+              .toLocaleDateString("en-US", { weekday: "long" })
+              .toLowerCase();
+
+            const serbianDay = englishToSerbian[dayOfWeekEnglish];
+
+            const formattedDate = new Date(date).toLocaleDateString("sr-RS", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+            });
+
+            return (
+              <option key={date} value={date}>
+                {`${serbianDay} ${formattedDate}`}
+              </option>
+            );
+          })}
         </select>
       </div>
 

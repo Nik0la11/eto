@@ -63,12 +63,3 @@ html {
 body {
   font-family: "Inter", sans-serif;
 }
-
-.no-scroll {
-  overflow: hidden !important;
-  height: 100vh;
-}
-
-.no-scroll::-webkit-scrollbar {
-  display: none;
-}

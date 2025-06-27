@@ -26,7 +26,7 @@ const AddAppointment = () => {
           />
         </div>
         <div className="flex justify-center">
-          <p className="text-xl m-auto">Datum: {onlyDate}</p>
+          <p className="text-xl m-auto text-p-color">Datum: {onlyDate}</p>
         </div>
 
         <div className="my-2">

@@ -188,40 +188,41 @@ const WorkingHours = () => {
               return (
                 <div
                   key={chosenDay}
-                  id={chosenDay}
-                  className="flex items-center justify-start gap-4 mt-2 mx-4"
+                  className="flex items-center justify-start gap-4 mt-2 mx-4 w-full"
                 >
-                  <p className="text-p-color">{chosenDay}</p>
-                  <label htmlFor="">od:</label>
-                  <input
-                    type="time"
-                    className="rounded-md"
-                    value={workingHours[engDay]?.start || ""}
-                    onChange={(e) => {
-                      setWorkingHours((prev) => ({
-                        ...prev,
-                        [engDay]: {
-                          ...prev[engDay],
-                          start: e.target.value,
-                        },
-                      }));
-                    }}
-                  />
-                  <label htmlFor="">do:</label>
-                  <input
-                    type="time"
-                    className="rounded-md"
-                    value={workingHours[engDay]?.end || ""}
-                    onChange={(e) => {
-                      setWorkingHours((prev) => ({
-                        ...prev,
-                        [engDay]: {
-                          ...prev[engDay],
-                          end: e.target.value,
-                        },
-                      }));
-                    }}
-                  />
+                  <p className="text-p-color min-w-[100px]">{chosenDay}</p>
+                  <div className="flex justify-center items-center gap-2 flex-grow">
+                    <label>od:</label>
+                    <input
+                      type="time"
+                      className="rounded-md text-p-color"
+                      value={workingHours[engDay]?.start || ""}
+                      onChange={(e) => {
+                        setWorkingHours((prev) => ({
+                          ...prev,
+                          [engDay]: {
+                            ...prev[engDay],
+                            start: e.target.value,
+                          },
+                        }));
+                      }}
+                    />
+                    <label>do:</label>
+                    <input
+                      type="time"
+                      className="rounded-md text-p-color"
+                      value={workingHours[engDay]?.end || ""}
+                      onChange={(e) => {
+                        setWorkingHours((prev) => ({
+                          ...prev,
+                          [engDay]: {
+                            ...prev[engDay],
+                            end: e.target.value,
+                          },
+                        }));
+                      }}
+                    />
+                  </div>
                 </div>
               );
             })}
@@ -232,7 +233,7 @@ const WorkingHours = () => {
                 </label>
                 <input
                   type="number"
-                  className="rounded-md w-3/4 text-center"
+                  className="rounded-md w-3/4 text-center text-p-color"
                   value={appointmentDuration || ""}
                   onChange={(e) => {
                     setAppointmentDuration(e.target.value);
@@ -245,7 +246,7 @@ const WorkingHours = () => {
                 </label>
                 <input
                   type="number"
-                  className="rounded-md w-3/4 text-center"
+                  className="rounded-md w-3/4 text-center text-p-color"
                   value={pauseBetween || ""}
                   onChange={(e) => {
                     setPauseBetween(e.target.value);
