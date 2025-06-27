@@ -72,6 +72,7 @@ const WorkingHours = () => {
 
       .then((json) => {
         setData(json);
+        console.log(json);
 
         // Parse working hours
         const parsed = Object.entries(backendDays).reduce((acc, [day]) => {
@@ -145,6 +146,26 @@ const WorkingHours = () => {
       body: JSON.stringify(data),
       credentials: "include",
     }).catch((err) => console.error("Error fetching data: ", err));
+  };
+
+  // Handler for generating new appointments
+  const handleGenerateNewAppointments = () => {
+    if (!token) return;
+
+    const numberOfCheckedDays = chosenDays.length;
+    console.log(numberOfCheckedDays);
+
+    fetch(`${BASE_URL}/v1/admin/generate_slots/${numberOfCheckedDays}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((json) => console.log("Result: ", json))
+      .catch((err) => console.log("Error fetching generate slots: ", err));
   };
 
   return (
@@ -232,8 +253,14 @@ const WorkingHours = () => {
                 />
               </div>
             </div>
-            <AdminButton className=" w-1/2 ">Kreiraj termine</AdminButton>
+            <AdminButton className=" w-1/2 ">Sačuvaj podešavanja</AdminButton>
           </form>
+          <AdminButton
+            className=" w-1/2 my-2"
+            onClick={handleGenerateNewAppointments}
+          >
+            Kreiraj nove termine
+          </AdminButton>
         </div>
       </div>
       <div className="h-full w-1/2 bg-[#E5E4E2] p-4 rounded-lg m-1 flex flex-col">

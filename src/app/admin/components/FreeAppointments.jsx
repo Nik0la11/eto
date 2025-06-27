@@ -1,12 +1,20 @@
 "use client";
 import AdminButton from "./AdminButton";
+import { useState, useEffect } from "react";
+import { useToken } from "@/app/components/Context";
 
 const FreeAppointments = () => {
+  const [day, setDay] = useState(new Date().toISOString().split("T")[0]);
+  const worker_id = 20;
+  const [data, setData] = useState();
+  const { token } = useToken();
+  const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+
   // function to get next seven days
   const getNextSevenDays = () => {
     const dates = [];
 
-    for (let i = 1; i < 8; i++) {
+    for (let i = 0; i < 7; i++) {
       const date = new Date();
       date.setDate(date.getDate() + i);
       dates.push(date.toISOString().split("T")[0]);
@@ -14,7 +22,27 @@ const FreeAppointments = () => {
     return dates;
   };
 
+  // Fetching free appointments
   const dates = getNextSevenDays();
+
+  useEffect(() => {
+    if (!token) return;
+
+    fetch(`${BASE_URL}/v1/appointment/get_available_dates`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        day,
+        worker_id,
+      }),
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((json) => setData(json))
+      .catch((err) => console.error("Error fetching data: ", err));
+  }, [day, token]);
 
   return (
     <div className={`h-full w-full overflow-hidden`}>
@@ -25,6 +53,7 @@ const FreeAppointments = () => {
             name=""
             id=""
             className="w-1/2 place-self-center p-2 rounded-md text-p-color"
+            onChange={(e) => setDay(e.target.value)}
           >
             {dates.map((date) => (
               <option value={date} key={date}>
@@ -32,8 +61,15 @@ const FreeAppointments = () => {
               </option>
             ))}
           </select>
-          <div>
-            <AdminButton>Odredjeni termin</AdminButton>
+          <div className="flex flex-wrap my-4 gap-2 justify-center">
+            {data?.data?.map((slot) => (
+              <AdminButton key={slot.id} id={slot.id}>
+                {new Date(slot.start_time).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </AdminButton>
+            ))}
           </div>
         </div>
         <AdminButton className="bg-red-500 hover:bg-red-600 w-1/6 ">
