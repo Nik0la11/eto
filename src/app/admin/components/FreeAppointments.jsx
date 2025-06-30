@@ -18,7 +18,12 @@ const FreeAppointments = () => {
   const worker_id = 20;
   const [data, setData] = useState();
   const { token } = useToken();
+  const [selectedSlotID, setSelectedSlotID] = useState(null);
   const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+  const [startTime, setStartTime] = useState(null);
+  const [duration, setDuration] = useState(null);
+  const [date, setDate] = useState(null);
+  const [isClicked, setIsClicked] = useState(true);
 
   // function to get next seven days
   const getNextSevenDays = () => {
@@ -34,6 +39,133 @@ const FreeAppointments = () => {
 
   // Fetching free appointments
   const dates = getNextSevenDays();
+
+  // Handler for delete appointment
+  const handleDeleteAppointment = async () => {
+    try {
+      setIsClicked(true);
+      const res = await fetch(
+        `${BASE_URL}/v1/admin/remove_slot/${selectedSlotID}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      ).catch((err) => {
+        console.log("Error: ", err);
+      });
+
+      if (res.ok) {
+        const updated = await fetch(
+          `${BASE_URL}/v1/appointment/get_available_dates`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              day,
+              worker_id,
+            }),
+            credentials: "include",
+          }
+        );
+
+        const json = await updated.json();
+        setData(json);
+        setSelectedSlotID(null);
+      }
+    } catch (err) {
+      console.log("Error: ", err);
+    }
+  };
+
+  //Handler for book appointment
+  const handleBookAppointment = async () => {
+    try {
+      setIsClicked(true);
+      const res = await fetch(
+        `${BASE_URL}/v1/admin/bookForSomeone/${selectedSlotID}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      ).catch((err) => {
+        console.log("Error: ", err);
+      });
+
+      if (res.ok) {
+        const updated = await fetch(
+          `${BASE_URL}/v1/appointment/get_available_dates`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              day,
+              worker_id,
+            }),
+            credentials: "include",
+          }
+        );
+
+        const json = await updated.json();
+        setData(json);
+        setSelectedSlotID(null);
+      }
+    } catch (err) {
+      console.log("Error: ", err);
+    }
+  };
+
+  // Handler for create appointment
+  const handleCreateAppointment = async (e) => {
+    try {
+      e.preventDefault();
+      const res = await fetch(`${BASE_URL}/v1/admin/add_custom_slot`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          start_time: `${date} ${startTime}:00`,
+          appointment_duration: `${duration}m`,
+        }),
+      }).catch((err) => {
+        console.log("Error: ", err);
+      });
+
+      if (res.ok) {
+        const updated = await fetch(
+          `${BASE_URL}/v1/appointment/get_available_dates`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              day,
+              worker_id,
+            }),
+            credentials: "include",
+          }
+        );
+
+        const json = await updated.json();
+        setData(json);
+        setSelectedSlotID(null);
+      }
+    } catch (err) {
+      console.log("Error: ", err);
+    }
+  };
 
   useEffect(() => {
     if (!token) return;
@@ -57,7 +189,7 @@ const FreeAppointments = () => {
   return (
     <div className={`h-full w-full overflow-hidden`}>
       <div className="h-3/5 w-full bg-[#E5E4E2] p-4 rounded-lg m-1 flex flex-col justtify-self-end ">
-        <h2 className="font-bold primary-color text-3xl ">Slobodni termini</h2>
+        <h2 className="font-bold primary-color text-3xl">Slobodni termini</h2>
         <div className="flex flex-col">
           <select
             name=""
@@ -86,7 +218,14 @@ const FreeAppointments = () => {
           </select>
           <div className="flex flex-wrap my-4 gap-2 justify-center">
             {data?.data?.map((slot) => (
-              <AdminButton key={slot.id} id={slot.id}>
+              <AdminButton
+                key={slot.id}
+                id={slot.id}
+                onClick={() => {
+                  setSelectedSlotID(slot.id);
+                  setIsClicked(false);
+                }}
+              >
                 {new Date(slot.start_time).toLocaleTimeString([], {
                   hour: "2-digit",
                   minute: "2-digit",
@@ -95,29 +234,65 @@ const FreeAppointments = () => {
             ))}
           </div>
         </div>
-        <AdminButton className="bg-red-500 hover:bg-red-600 text-p-color w-1/6 ">
-          Izbriši termin
-        </AdminButton>
+        {isClicked ? null : (
+          <div className="flex justify-center items-center gap-4">
+            <AdminButton
+              className="bg-red-500 hover:bg-red-600 text-p-color w-1/6 self-center text-center"
+              onClick={() => handleDeleteAppointment()}
+            >
+              Izbriši termin
+            </AdminButton>
+
+            <AdminButton
+              className="bg-green-500 hover:bg-green-600 text-p-color w-1/6 self-center text-center"
+              onClick={handleBookAppointment}
+            >
+              Rezerviši termin
+            </AdminButton>
+          </div>
+        )}
       </div>
 
       <div className="w-full h-2/5 bg-[#E5E4E2] p-4 rounded-lg m-1 flex flex-col">
-        <h2 className="font-bold primary-color text-3xl ">Dodavanje termina</h2>
-        <form action="" className="flex flex-col justify-start gap-4 my-2 ">
-          <div className="flex flex-col gap-2">
+        <h2 className="font-bold primary-color text-3xl">Dodavanje termina</h2>
+        <form
+          action=""
+          className="flex flex-col justify-start gap-4 my-2 "
+          onSubmit={handleCreateAppointment}
+        >
+          <div className="flex gap-4">
             <label htmlFor="" className="text-p-color">
               Datum:
             </label>
 
-            <input type="date" className="rounded-md w-1/5 text-p-color" />
+            <input
+              type="date"
+              className="rounded-md w-1/5 text-p-color"
+              onChange={(e) => setDate(e.target.value)}
+            />
+
+            <label htmlFor="" className="text-p-color">
+              Trajanje termina:
+            </label>
+
+            <input
+              type="number"
+              className="rounded-md w-1/5 text-p-color"
+              onChange={(e) => setDuration(e.target.value)}
+            />
           </div>
           <div className="flex flex-col gap-2">
             <label htmlFor="" className="text-p-color">
               Pocetak termina:
             </label>
 
-            <input type="time" className="rounded-md w-1/5 text-p-color" />
+            <input
+              type="time"
+              className="rounded-md w-1/5 text-p-color"
+              onChange={(e) => setStartTime(e.target.value)}
+            />
           </div>
-          <AdminButton>Dodaj termin</AdminButton>
+          <AdminButton type="sumbit">Dodaj termin</AdminButton>
         </form>
       </div>
     </div>
