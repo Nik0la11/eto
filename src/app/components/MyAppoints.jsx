@@ -102,7 +102,7 @@ const MyAppoints = ({ appointment, setAppointment }) => {
                   </div>
 
                   <div className="h-12 grow bg-[#E5E4DF] font-['Montserrat'] font-semibold flex justify-center items-center">
-                    Status
+                    {appointment.status}
                   </div>
                 </React.Fragment>
               ))}

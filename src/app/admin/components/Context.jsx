@@ -9,6 +9,8 @@ const FreeAppointmentsContext = createContext();
 const ChooseContext = createContext();
 const ChosenDaysContext = createContext();
 const WorkingHoursContext = createContext();
+const SlotIDContext = createContext();
+const StatusContext = createContext();
 
 export const ClickProvider = ({ children }) => {
   const [isClicked, setIsClicked] = useState(true);
@@ -18,6 +20,8 @@ export const ClickProvider = ({ children }) => {
   const [isChooseClicked, setIsChooseClicked] = useState(true);
   const [chosenDays, setChosenDays] = useState([]);
   const [workingHours, setWorkingHours] = useState(false);
+  const [slotID, setSlotID] = useState();
+  const [status, setStatus] = useState();
 
   return (
     <ClickContext.Provider value={{ isClicked, setIsClicked }}>
@@ -33,7 +37,11 @@ export const ClickProvider = ({ children }) => {
                 <WorkingHoursContext.Provider
                   value={{ workingHours, setWorkingHours }}
                 >
-                  {children}
+                  <SlotIDContext.Provider value={{ slotID, setSlotID }}>
+                    <StatusContext.Provider value={{ status, setStatus }}>
+                      {children}
+                    </StatusContext.Provider>
+                  </SlotIDContext.Provider>
                 </WorkingHoursContext.Provider>
               </ChosenDaysContext.Provider>
             </ChooseContext.Provider>
@@ -51,3 +59,5 @@ export const useFreeAppointments = () => useContext(FreeAppointmentsContext);
 export const useChoose = () => useContext(ChooseContext);
 export const useChosenDays = () => useContext(ChosenDaysContext);
 export const useWorkingHours = () => useContext(WorkingHoursContext);
+export const useSlotID = () => useContext(SlotIDContext);
+export const useStatus = () => useContext(StatusContext);

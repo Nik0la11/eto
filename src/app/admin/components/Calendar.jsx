@@ -11,14 +11,19 @@ import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
 
 // Custom context hooks
-import { useClick } from "./Context";
-import { useDate } from "./Context";
+import { useClick, useStatus, useDate, useSlotID } from "./Context";
 
 // Serbian Latin locale for FullCalendar
 import srLatinLocale from "../sr-latin";
 import { Cuprum } from "next/font/google";
 
 export default function Calendar() {
+  const colorMap = {
+    booked: "#3498db",
+    missed: "#e74c3c",
+    available: "#9b59b6",
+    completed: "#2ecc71",
+  };
   // Events to be shown on the calendar
   const [events, setEvents] = useState([]);
 
@@ -33,9 +38,10 @@ export default function Calendar() {
   const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
   // Context states
-  const { isClicked, setIsClicked } = useClick();
-  const { date, setDate } = useDate();
-
+  const { setIsClicked } = useClick();
+  const { setDate } = useDate();
+  const { setSlotID } = useSlotID();
+  const { setStatus } = useStatus();
   // Auth token and ref to FullCalendar instance
   const [token, setToken] = useState();
   const calendarRef = useRef(null);
@@ -52,7 +58,17 @@ export default function Calendar() {
 
   // Triggered when a calendar event is clicked
   const handleEventClick = (clickInfo) => {
-    alert("Event: " + clickInfo.event.title);
+    setIsClicked(false);
+    const slotID = clickInfo.event.extendedProps.slotId;
+    const status = clickInfo.event.extendedProps.status;
+
+    if (status) {
+      setStatus(status);
+    }
+
+    if (slotID) {
+      setSlotID(slotID);
+    }
   };
 
   // Fetches event data from backend for a given date
@@ -61,7 +77,6 @@ export default function Calendar() {
     const nextMonth = getFirstDayOfNextMonth(formattedDate);
     console.log(formattedDate);
     console.log(nextMonth);
-
     try {
       const res = await fetch(`${BASE_URL}/v1/admin/get_calendar`, {
         method: "POST",
@@ -137,7 +152,6 @@ export default function Calendar() {
   // When a specific day is selected (like from day view), fetch its booked time slots
   useEffect(() => {
     if (!day) return;
-
     fetch(`${BASE_URL}/v1/admin/get_booked_dates`, {
       method: "POST",
       headers: {
@@ -155,7 +169,12 @@ export default function Calendar() {
             end: new Date(
               new Date(slot.start_time).getTime() + 30 * 60 * 1000
             ).toISOString(),
+            allDay: false,
+            extendedProps: { slotId: slot.id, status: slot.status },
+            backgroundColor: colorMap[slot.status],
+            borderColor: colorMap[slot.status],
           }));
+
           setEvents(mappedEvents);
         } else {
           setEvents([]);
@@ -181,13 +200,21 @@ export default function Calendar() {
         headerToolbar={{
           left: "prev,next today",
           center: "title",
-          right: "dayGridMonth,timeGridWeek,timeGridDay",
+          right: "dayGridMonth,dayGridWeek,timeGridDay",
         }}
         locales={[srLatinLocale]} // Serbian Latin translation
         locale="sr-Latn"
         events={events} // Event list passed into calendar
         dateClick={handleDateClick}
-        eventClick={handleEventClick}
+        eventClick={(info) => {
+          const viewType = info.view.type;
+
+          if (viewType === "dayGridDay" || viewType === "timeGridDay") {
+            handleEventClick(info);
+          } else {
+            info.jsEvent.preventDefault();
+          }
+        }}
         selectable={true}
         editable={true}
         selectMirror={true}
