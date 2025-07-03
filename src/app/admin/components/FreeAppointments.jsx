@@ -187,9 +187,11 @@ const FreeAppointments = () => {
   }, [day, token]);
 
   return (
-    <div className={`h-full w-full overflow-hidden`}>
-      <div className="h-3/5 w-full bg-[#E5E4E2] p-4 rounded-lg m-1 flex flex-col justtify-self-end ">
-        <h2 className="font-bold primary-color text-3xl">Slobodni termini</h2>
+    <div className={`h-screen min-w-screen  box-border p-1`}>
+      <div className="h-3/5  bg-[#E5E4E2] p-4 rounded-lg  flex flex-col  ">
+        <h2 className="font-bold primary-color text-3xl mb-2">
+          Slobodni termini
+        </h2>
         <div className="flex flex-col">
           <select
             name=""
@@ -253,14 +255,14 @@ const FreeAppointments = () => {
         )}
       </div>
 
-      <div className="w-full h-2/5 bg-[#E5E4E2] p-4 rounded-lg m-1 flex flex-col">
+      <div className="w-full h-2/5 bg-[#E5E4E2] p-4 rounded-lg mt-1 flex flex-col">
         <h2 className="font-bold primary-color text-3xl">Dodavanje termina</h2>
         <form
           action=""
           className="flex flex-col justify-start gap-4 my-2 "
           onSubmit={handleCreateAppointment}
         >
-          <div className="flex gap-4">
+          <div className="flex gap-2">
             <label htmlFor="" className="text-p-color">
               Datum:
             </label>

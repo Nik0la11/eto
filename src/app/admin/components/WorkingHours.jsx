@@ -169,8 +169,8 @@ const WorkingHours = () => {
   };
 
   return (
-    <div className=" h-full w-full overflow-hidden flex ">
-      <div className="h-full w-1/2 bg-[#E5E4E2] p-4 rounded-lg m-1 flex flex-col">
+    <div className=" h-full w-full overflow-x-hidden overflow-y-auto flex flex-col md:flex-row md:overflow-hidden">
+      <div className="bg-[#E5E4E2] p-4 rounded-lg m-1 flex flex-col w-full md:h-screen w-1/2">
         <h2 className="font-bold primary-color text-3xl ">
           Podešavanje radnog vremena
         </h2>
@@ -226,14 +226,14 @@ const WorkingHours = () => {
                 </div>
               );
             })}
-            <div className="flex my-4">
+            <div className="md:flex-row  flex flex-col gap-2 my-4">
               <div className="flex flex-col">
                 <label htmlFor="" className="text-p-color">
                   Trajanje termina:
                 </label>
                 <input
                   type="number"
-                  className="rounded-md w-3/4 text-center text-p-color"
+                  className="rounded-md lg:w-3/4 w-1/3 text-center text-p-color"
                   value={appointmentDuration || ""}
                   onChange={(e) => {
                     setAppointmentDuration(e.target.value);
@@ -246,7 +246,7 @@ const WorkingHours = () => {
                 </label>
                 <input
                   type="number"
-                  className="rounded-md w-3/4 text-center text-p-color"
+                  className="rounded-md lg:w-3/4 w-1/3 text-center text-p-color "
                   value={pauseBetween || ""}
                   onChange={(e) => {
                     setPauseBetween(e.target.value);
@@ -254,17 +254,19 @@ const WorkingHours = () => {
                 />
               </div>
             </div>
-            <AdminButton className=" w-1/2 ">Sačuvaj podešavanja</AdminButton>
+            <AdminButton className="lg:w-1/2 w-2/3">
+              Sačuvaj podešavanja
+            </AdminButton>
           </form>
           <AdminButton
-            className=" w-1/2 my-2"
+            className="lg:w-1/2 w-2/3 my-2"
             onClick={handleGenerateNewAppointments}
           >
             Kreiraj nove termine
           </AdminButton>
         </div>
       </div>
-      <div className="h-full w-1/2 bg-[#E5E4E2] p-4 rounded-lg m-1 flex flex-col">
+      <div className=" bg-[#E5E4E2] p-4 rounded-lg m-1 flex flex-col w-full md:h-screen w-1/2">
         <div className="flex mb-4">
           <h1 className="font-bold primary-color text-3xl flex-1">
             Izaberi radne dane

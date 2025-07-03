@@ -89,7 +89,7 @@ const MyAppoints = ({ appointment, setAppointment }) => {
               poruke koju ste primili ili telefonskim pozivom!
             </p>
 
-            <div className="grid grid-cols-[1fr_1fr_1fr_1fr_0.2fr] gap-2 mb-2 ">
+            <div className="grid sm:grid-cols-[1fr_1fr_1fr_1fr_0.295fr] gap-2 mb-2 grid-cols-[1fr_1fr_1fr_1fr_0.5fr]">
               <div className="h-12 grow bg-[#C2C1BA] font-['Montserrat'] font-semibold flex justify-center items-center">
                 #
               </div>

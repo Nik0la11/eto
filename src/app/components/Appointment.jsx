@@ -90,7 +90,7 @@ const Appointment = () => {
   if (!hasMounted) return null;
 
   return token ? (
-    <div className="w-3/4 m-auto bg-[#E5E4DF]" id="appointment">
+    <div className="w-3/4 m-auto bg-[#E5E4DF]">
       <div>
         <h1 className="uppercase font-bold text-[#D4AF37] text-3xl  pt-24 pb-12">
           • Zakažite vaš termin

@@ -5,7 +5,7 @@ import { useClick, useSlotID, useStatus } from "./Context";
 import { useState } from "react";
 import { useToken } from "@/app/components/Context";
 
-const AddAppointment = () => {
+const ChangeStatus = () => {
   const statuses = ["booked", "missed", "available", "completed"];
 
   const { isClicked, setIsClicked } = useClick();
@@ -55,7 +55,7 @@ const AddAppointment = () => {
           />
         </div>
         <div className="flex justify-center">
-          <p className="text-xl m-auto text-p-color">Datum: {onlyDate}</p>
+          <p className="text-xl m-auto text-p-color mb-4">Datum: {onlyDate}</p>
         </div>
 
         <div className="">
@@ -86,4 +86,4 @@ const AddAppointment = () => {
   );
 };
 
-export default AddAppointment;
+export default ChangeStatus;
