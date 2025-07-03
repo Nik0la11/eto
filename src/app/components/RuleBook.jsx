@@ -21,7 +21,7 @@ const RuleBook = ({ rules, setRules }) => {
             onClick={handleRules}
           />
         </div>
-        <div className="my-2">Ovdje idu ta pravila i sve to</div>
+        <div className="my-2 text-[#444545]">Ovdje idu ta pravila i sve to</div>
         <div className="flex justify-end ">
           {" "}
           <Button onClick={handleRules} className="place-self-end">

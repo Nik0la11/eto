@@ -88,7 +88,7 @@ const SignIn = () => {
             <Button onClick={handleRegistration}>Registracija</Button>
           </div>
           <div className="flex flex-col justify-center w-[432px]">
-            <h3 className="text-2xl font-['Montserrat'] font-bold pb-2">
+            <h3 className="text-2xl font-['Montserrat'] font-bold pb-2 text-[#2E2E2E]">
               Prijava
             </h3>
             <form className="flex flex-col gap-2" onSubmit={handleSignIn}>
@@ -98,7 +98,7 @@ const SignIn = () => {
               <input
                 type="mail"
                 name="mail"
-                className="border p-2 rounded"
+                className="border p-2 rounded text-[#444545]"
                 value={email || ""}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -114,7 +114,7 @@ const SignIn = () => {
               <input
                 type="password"
                 name="password"
-                className="border p-2 rounded focus:outline-none"
+                className="border p-2 rounded focus:outline-none text-[#444545]"
                 value={password || ""}
                 onChange={(e) => setPassword(e.target.value)}
                 required

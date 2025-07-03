@@ -38,7 +38,9 @@ const Footer = () => {
         </div>
         <hr className="my-4 border-t border-gray-800 w-full" />
         <div className="mt-12">
-          <p>Ime salona © 2025. All Rights Reserved</p>
+          <p className="text-[#444545]">
+            Ime salona © 2025. All Rights Reserved
+          </p>
         </div>
       </div>
     </footer>

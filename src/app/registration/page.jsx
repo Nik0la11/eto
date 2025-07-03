@@ -96,7 +96,7 @@ const SignIn = () => {
               <input
                 type="mail"
                 name="mail"
-                className="border p-2 rounded"
+                className="border p-2 rounded text-[#444545]"
                 value={email || ""}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -108,7 +108,7 @@ const SignIn = () => {
                 type="tel"
                 pattern="[0-9]{9,15}"
                 name="phone"
-                className="border p-2 rounded focus:outline-none"
+                className="border p-2 rounded focus:outline-none text-[#444545]"
                 value={number || ""}
                 onChange={(e) => setNumber(e.target.value)}
                 required
@@ -119,7 +119,7 @@ const SignIn = () => {
                   <input
                     type="name"
                     name="name"
-                    className="border p-2 rounded focus:outline-none flex-1"
+                    className="border p-2 rounded focus:outline-none flex-1 text-[#444545]"
                     value={first_name || ""}
                     onChange={(e) => setFirstName(e.target.value)}
                     required
@@ -130,7 +130,7 @@ const SignIn = () => {
                   <input
                     type="name"
                     name="surname"
-                    className="border p-2 rounded focus:outline-none flex-1"
+                    className="border p-2 rounded focus:outline-none flex-1 text-[#444545]"
                     value={last_name || ""}
                     onChange={(e) => setLastName(e.target.value)}
                     required
@@ -143,7 +143,7 @@ const SignIn = () => {
                   <input
                     type="password"
                     name="password"
-                    className="border p-2 rounded focus:outline-none flex-1"
+                    className="border p-2 rounded focus:outline-none flex-1 text-[#444545]"
                     required
                     onChange={(e) => setPassword(e.target.value)}
                   />
@@ -155,7 +155,7 @@ const SignIn = () => {
                   <input
                     type="password"
                     name="password2"
-                    className="border p-2 rounded focus:outline-none flex-1"
+                    className="border p-2 rounded focus:outline-none flex-1 text-[#444545]"
                     required
                     onChange={(e) => setPassword2(e.target.value)}
                   />

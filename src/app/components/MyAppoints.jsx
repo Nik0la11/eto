@@ -1,6 +1,6 @@
 "use client";
 import Button from "./Button";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon, EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 
 import { useRouter } from "next/navigation";
 import { UserIcon } from "@heroicons/react/24/outline";
@@ -12,6 +12,7 @@ const MyAppoints = ({ appointment, setAppointment }) => {
   const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
   const { token } = useToken();
   const [data, setData] = useState(null);
+  const [openDropDownID, setOpenDropDownID] = useState(null);
   const worker_id = 20;
   const handleAppointment = () => {
     setAppointment(true);
@@ -44,6 +45,28 @@ const MyAppoints = ({ appointment, setAppointment }) => {
     window.location.reload();
   };
 
+  const handleCancelAppointment = () => {
+    console.log(openDropDownID);
+    fetch(`${BASE_URL}/v1/appointment/cancel_appointment/${openDropDownID}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        console.log(json);
+        setData((prev) => ({
+          ...prev,
+          data: prev.data.filter((a) => a.id !== openDropDownID),
+        }));
+
+        setOpenDropDownID(null);
+      })
+      .catch((err) => console.log("Error fetching: ", err));
+  };
+
   return (
     <div
       className={`fixed top-0 left-0 flex justify-center items-center z-[9999] h-screen bg-[#00000080] w-full ${appointment ? "invisible" : "visible"} `}
@@ -66,20 +89,23 @@ const MyAppoints = ({ appointment, setAppointment }) => {
               poruke koju ste primili ili telefonskim pozivom!
             </p>
 
-            <div className="grid grid-cols-4 gap-2">
-              <div className="h-12 grow bg-[#E5E4DF] font-['Montserrat'] font-semibold flex justify-center items-center">
+            <div className="grid grid-cols-[1fr_1fr_1fr_1fr_0.2fr] gap-2 mb-2 ">
+              <div className="h-12 grow bg-[#C2C1BA] font-['Montserrat'] font-semibold flex justify-center items-center">
                 #
               </div>
-              <div className="h-12 grow bg-[#E5E4DF] font-['Montserrat'] font-semibold flex justify-center items-center">
+              <div className="h-12 grow bg-[#C2C1BA] font-['Montserrat'] font-semibold flex justify-center items-center">
                 Datum
               </div>
-              <div className="h-12 grow bg-[#E5E4DF] font-['Montserrat'] font-semibold flex justify-center items-center">
+              <div className="h-12 grow bg-[#C2C1BA] font-['Montserrat'] font-semibold flex justify-center items-center">
                 Vreme
               </div>
-              <div className="h-12 grow bg-[#E5E4DF] font-['Montserrat'] font-semibold flex justify-center items-center">
+              <div className="h-12 grow bg-[#C2C1BA] font-['Montserrat'] font-semibold flex justify-center items-center">
                 Status
               </div>
-
+            </div>
+            <div
+              className={`${data?.data?.length > 7 ? "max-h-64 overflow-y-auto grid grid-cols-[1fr_1fr_1fr_1fr_0.2fr] gap-2 relative" : "overflow-visible grid grid-cols-[1fr_1fr_1fr_1fr_0.2fr] gap-2 relative"}`}
+            >
               {data?.data?.map((appointment) => (
                 <React.Fragment key={appointment.id}>
                   <div className="h-12 grow bg-[#E5E4DF] font-['Montserrat'] font-semibold flex justify-center items-center">
@@ -104,62 +130,57 @@ const MyAppoints = ({ appointment, setAppointment }) => {
                   <div className="h-12 grow bg-[#E5E4DF] font-['Montserrat'] font-semibold flex justify-center items-center">
                     {appointment.status}
                   </div>
+
+                  <div className="relative h-12 grow font-['Montserrat'] font-semibold flex justify-center items-center">
+                    <EllipsisVerticalIcon
+                      className="h-6 w-6 cursor-pointer text-black-600  hover:text-black-900"
+                      onClick={() =>
+                        setOpenDropDownID(
+                          openDropDownID === appointment.id
+                            ? null
+                            : appointment.id
+                        )
+                      }
+                    />
+                    {openDropDownID === appointment.id && (
+                      <div className="absolute right-0 top-full w-36 bg-white border shadow rounded z-10">
+                        <button
+                          className="w-full text-left px-4 py-2 hover:bg-gray-100 text-p-color"
+                          onClick={handleCancelAppointment}
+                        >
+                          Otkazi termin
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </React.Fragment>
               ))}
             </div>
 
-            <div>
-              <div className="mt-8 mb-4">
-                <div className="flex mb-2">
-                  <h1 className="uppercase font-bold text-[#D4AF37] text-3xl flex-1">
-                    Lista otkazanih termina
-                  </h1>
-                </div>
-
-                <div className="grid grid-cols-4 gap-2 ">
-                  <div className="h-12 grow bg-[#E5E4DF] font-['Montserrat'] font-semibold flex justify-center items-center">
-                    #
-                  </div>
-                  <div className="h-12 grow bg-[#E5E4DF] font-['Montserrat'] font-semibold flex justify-center items-center">
-                    Datum
-                  </div>
-                  <div className="h-12 grow bg-[#E5E4DF] font-['Montserrat'] font-semibold flex justify-center items-center">
-                    Vreme
-                  </div>
-                  <div className="h-12 grow bg-[#E5E4DF] font-['Montserrat'] font-semibold flex justify-center items-center">
-                    Status
-                  </div>
-                </div>
-              </div>
-
-              {token === null ? null : (
-                <div className="flex justify-end gap-2 mt-8">
-                  {token ? (
-                    <Button
-                      onClick={handleSignOut}
-                      className="place-self-end flex gap-2"
-                    >
-                      <p>Odjavi se</p>
-                    </Button>
-                  ) : (
-                    <Button
-                      onClick={handleSignIn}
-                      className="place-self-end flex gap-2"
-                    >
-                      <UserIcon className="h-6 w-6 text-black-600" />
-                      <p>Prijavi se</p>
-                    </Button>
-                  )}
-
+            {token === null ? null : (
+              <div className="flex justify-end gap-2 mt-8">
+                {token ? (
                   <Button
-                    onClick={handleAppointment}
-                    className="place-self-end"
+                    onClick={handleSignOut}
+                    className="place-self-end flex gap-2"
                   >
-                    Zatvori
+                    <p>Odjavi se</p>
                   </Button>
-                </div>
-              )}
-            </div>
+                ) : (
+                  <Button
+                    onClick={handleSignIn}
+                    className="place-self-end flex gap-2"
+                  >
+                    <UserIcon className="h-6 w-6 text-black-600" />
+                    <p>Prijavi se</p>
+                  </Button>
+                )}
+
+                <Button onClick={handleAppointment} className="place-self-end">
+                  Zatvori
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>
