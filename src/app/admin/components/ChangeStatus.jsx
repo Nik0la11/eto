@@ -62,7 +62,7 @@ const ChangeStatus = () => {
           <select
             name=""
             id=""
-            className="w-1/2  flex place-self-center p-2 rounded-md text-p-color"
+            className="w-1/2  flex place-self-center p-2 rounded-md text-p-color border shadow-md"
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
           >

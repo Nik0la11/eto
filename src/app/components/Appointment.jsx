@@ -110,6 +110,7 @@ const Appointment = () => {
             const formattedDate = new Date(date).toLocaleDateString("sr-RS", {
               day: "2-digit",
               month: "2-digit",
+              hour12: false,
               year: "numeric",
             });
 
@@ -122,7 +123,7 @@ const Appointment = () => {
         </select>
       </div>
 
-      <div className="flex flex-wrap gap-y-4 my-12 gap-x-8 w-3/4 m-auto justify-center">
+      <div className="flex flex-wrap gap-y-4 my-12 gap-x-4 w-3/4 m-auto justify-center">
         {data?.data?.map((slot) => (
           <Button
             id={slot.id}
@@ -135,6 +136,7 @@ const Appointment = () => {
             {new Date(slot.start_time).toLocaleTimeString([], {
               hour: "2-digit",
               minute: "2-digit",
+              hour12: false,
             })}
           </Button>
         ))}
@@ -195,6 +197,7 @@ const Appointment = () => {
               new Date(selectedTime).toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit",
+                hour12: false,
               }) || ""
             }
           />

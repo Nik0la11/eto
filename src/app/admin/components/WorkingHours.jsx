@@ -41,6 +41,8 @@ const WorkingHours = () => {
   const [data, setData] = useState();
   const [appointmentDuration, setAppointmentDuration] = useState("");
   const [pauseBetween, setPauseBetween] = useState("");
+  const [disabled1, setDisabled1] = useState(true);
+  const [disabled2, setDisabeld2] = useState(true);
 
   // Initialize workingHours with days and empty start/end
   const [workingHours, setWorkingHours] = useState(
@@ -205,6 +207,8 @@ const WorkingHours = () => {
                             start: e.target.value,
                           },
                         }));
+                        setDisabeld2(false);
+                        setDisabled1(false);
                       }}
                     />
                     <label className="text-p-color">do:</label>
@@ -220,6 +224,8 @@ const WorkingHours = () => {
                             end: e.target.value,
                           },
                         }));
+                        setDisabeld2(false);
+                        setDisabled1(false);
                       }}
                     />
                   </div>
@@ -237,6 +243,8 @@ const WorkingHours = () => {
                   value={appointmentDuration || ""}
                   onChange={(e) => {
                     setAppointmentDuration(e.target.value);
+                    setDisabeld2(false);
+                    setDisabled1(false);
                   }}
                 />
               </div>
@@ -250,15 +258,18 @@ const WorkingHours = () => {
                   value={pauseBetween || ""}
                   onChange={(e) => {
                     setPauseBetween(e.target.value);
+                    setDisabeld2(false);
+                    setDisabled1(false);
                   }}
                 />
               </div>
             </div>
-            <AdminButton className="lg:w-1/2 w-2/3">
+            <AdminButton disabled={disabled1} className="lg:w-1/2 w-2/3">
               Sačuvaj podešavanja
             </AdminButton>
           </form>
           <AdminButton
+            disabled={disabled2}
             className="lg:w-1/2 w-2/3 my-2"
             onClick={handleGenerateNewAppointments}
           >
@@ -290,7 +301,9 @@ const WorkingHours = () => {
                   type="checkbox"
                   value={day}
                   checked={chosenDays.includes(day)}
-                  onChange={handleCheckboxChange}
+                  onChange={(e) => {
+                    handleCheckboxChange(e), setDisabled1(false);
+                  }}
                 />
               </div>
             ))}

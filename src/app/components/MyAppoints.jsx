@@ -67,6 +67,16 @@ const MyAppoints = ({ appointment, setAppointment }) => {
       .catch((err) => console.log("Error fetching: ", err));
   };
 
+  function isLessThanTwoHours(appointmentStart) {
+    const now = new Date();
+    const start = new Date(appointmentStart);
+    const diffMs = start - now;
+
+    const twoHoursInMs = 2 * 60 * 60 * 1000;
+
+    return diffMs <= twoHoursInMs;
+  }
+
   return (
     <div
       className={`fixed top-0 left-0 flex justify-center items-center z-[9999] h-screen bg-[#00000080] w-full ${appointment ? "invisible" : "visible"} `}
@@ -85,8 +95,7 @@ const MyAppoints = ({ appointment, setAppointment }) => {
 
           <div className="my-2">
             <p className="text-red-900 mb-4">
-              Napomena: Termin možete otkazati do 2h pred termin putem email
-              poruke koju ste primili ili telefonskim pozivom!
+              Napomena: Termin možete otkazati do 2h pred termin putem email!
             </p>
 
             <div className="grid sm:grid-cols-[1fr_1fr_1fr_1fr_0.295fr] gap-2 mb-2 grid-cols-[1fr_1fr_1fr_1fr_0.5fr]">
@@ -106,55 +115,62 @@ const MyAppoints = ({ appointment, setAppointment }) => {
             <div
               className={`${data?.data?.length > 7 ? "max-h-64 overflow-y-auto grid grid-cols-[1fr_1fr_1fr_1fr_0.2fr] gap-2 relative" : "overflow-visible grid grid-cols-[1fr_1fr_1fr_1fr_0.2fr] gap-2 relative"}`}
             >
-              {data?.data?.map((appointment) => (
-                <React.Fragment key={appointment.id}>
-                  <div className="h-12 grow bg-[#E5E4DF] font-['Montserrat'] font-semibold flex justify-center items-center">
-                    {appointment.id}
-                  </div>
-                  <div className="h-12 grow bg-[#E5E4DF] font-['Montserrat'] font-semibold flex justify-center items-center">
-                    {new Date(appointment.start_time).toLocaleDateString(
-                      "en-CA"
-                    )}
-                  </div>
+              {data?.data
+                .sort((a, b) => new Date(b.start_time) - new Date(a.start_time))
+                .map((appointment) => (
+                  <React.Fragment key={appointment.id}>
+                    <div className="h-12 grow bg-[#E5E4DF] font-['Montserrat'] font-semibold flex justify-center items-center">
+                      {appointment.id}
+                    </div>
+                    <div className="h-12 grow bg-[#E5E4DF] font-['Montserrat'] font-semibold flex justify-center items-center">
+                      {new Date(appointment.start_time).toLocaleDateString(
+                        "en-CA"
+                      )}
+                    </div>
 
-                  <div className="h-12 grow bg-[#E5E4DF] font-['Montserrat'] font-semibold flex justify-center items-center">
-                    {new Date(appointment.start_time).toLocaleTimeString(
-                      "en-GB",
-                      {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      }
-                    )}
-                  </div>
+                    <div className="h-12 grow bg-[#E5E4DF] font-['Montserrat'] font-semibold flex justify-center items-center">
+                      {new Date(appointment.start_time).toLocaleTimeString(
+                        "en-GB",
+                        {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        }
+                      )}
+                    </div>
 
-                  <div className="h-12 grow bg-[#E5E4DF] font-['Montserrat'] font-semibold flex justify-center items-center">
-                    {appointment.status}
-                  </div>
+                    <div
+                      className={`h-12 grow  font-['Montserrat'] font-semibold flex justify-center items-center ${appointment.status === "booked" ? "bg-[#F0DB88]" : "bg-[#E5E4DF]"}`}
+                    >
+                      {appointment.status}
+                    </div>
 
-                  <div className="relative h-12 grow font-['Montserrat'] font-semibold flex justify-center items-center">
-                    <EllipsisVerticalIcon
-                      className="h-6 w-6 cursor-pointer text-black-600  hover:text-black-900"
-                      onClick={() =>
-                        setOpenDropDownID(
-                          openDropDownID === appointment.id
-                            ? null
-                            : appointment.id
-                        )
-                      }
-                    />
-                    {openDropDownID === appointment.id && (
-                      <div className="absolute right-0 top-full w-36 bg-white border shadow rounded z-10">
-                        <button
-                          className="w-full text-left px-4 py-2 hover:bg-gray-100 text-p-color"
-                          onClick={handleCancelAppointment}
-                        >
-                          Otkazi termin
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </React.Fragment>
-              ))}
+                    <div className="relative h-12 grow font-['Montserrat'] font-semibold flex justify-center items-center">
+                      {isLessThanTwoHours(appointment.start_time) ? null : (
+                        <EllipsisVerticalIcon
+                          className="h-6 w-6 cursor-pointer text-black-600  hover:text-black-900"
+                          onClick={() =>
+                            setOpenDropDownID(
+                              openDropDownID === appointment.id
+                                ? null
+                                : appointment.id
+                            )
+                          }
+                        />
+                      )}
+
+                      {openDropDownID === appointment.id && (
+                        <div className="absolute right-0 top-full w-36 bg-white border shadow rounded z-10">
+                          <button
+                            className="w-full text-left px-4 py-2 hover:bg-gray-100 text-p-color"
+                            onClick={handleCancelAppointment}
+                          >
+                            Otkazi termin
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </React.Fragment>
+                ))}
             </div>
 
             {token === null ? null : (

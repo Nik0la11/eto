@@ -196,7 +196,7 @@ const FreeAppointments = () => {
           <select
             name=""
             id=""
-            className="w-1/2 place-self-center p-2 rounded-md text-p-color"
+            className="w-1/2 place-self-center p-2 rounded-md text-p-color shadow-sm"
             onChange={(e) => setDay(e.target.value)}
           >
             {dates.map((date) => {
@@ -231,6 +231,7 @@ const FreeAppointments = () => {
                 {new Date(slot.start_time).toLocaleTimeString([], {
                   hour: "2-digit",
                   minute: "2-digit",
+                  hour12: false,
                 })}
               </AdminButton>
             ))}
@@ -239,14 +240,14 @@ const FreeAppointments = () => {
         {isClicked ? null : (
           <div className="flex justify-center items-center gap-4">
             <AdminButton
-              className="bg-red-500 hover:bg-red-600 text-p-color w-1/6 self-center text-center"
+              className="bg-red-500 hover:bg-red-600 text-p-color w-1/6 self-center text-center  shadow-lg shadow-red-500/50"
               onClick={() => handleDeleteAppointment()}
             >
               Izbriši termin
             </AdminButton>
 
             <AdminButton
-              className="bg-green-500 hover:bg-green-600 text-p-color w-1/6 self-center text-center"
+              className="bg-green-500 hover:bg-green-600 text-p-color w-1/6 self-center text-center shadow-lg shadow-green-500/50"
               onClick={handleBookAppointment}
             >
               Rezerviši termin
