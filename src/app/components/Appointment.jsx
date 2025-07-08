@@ -4,7 +4,7 @@ import Button from "./Button";
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
-import { useFirstName, useLastName, useMail, useToken } from "./Context";
+import { useToken } from "./Context";
 
 const Appointment = () => {
   const englishToSerbian = {

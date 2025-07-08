@@ -1,7 +1,6 @@
 "use client";
 import AdminButton from "./AdminButton";
-import { XMarkIcon } from "@heroicons/react/24/outline";
-import { useChoose, useChosenDays, useClick } from "./Context";
+import { useChosenDays } from "./Context";
 import { useState, useEffect } from "react";
 
 const WorkingHours = () => {

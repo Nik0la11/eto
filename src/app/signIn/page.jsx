@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import Button from "../components/Button";
 import Footer from "../components/Footer";
 import { useState } from "react";
-import Link from "next/link";
 import { UserIcon } from "@heroicons/react/24/outline";
 import { useToken } from "../components/Context";
 

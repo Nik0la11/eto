@@ -1,10 +1,4 @@
-export default function Button({
-  onClick,
-  children,
-  className = "",
-  appointment,
-  setAppointment,
-}) {
+export default function Button({ onClick, children, className = "" }) {
   return (
     <button
       onClick={onClick}

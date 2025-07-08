@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import Button from "../components/Button";
 import Footer from "../components/Footer";
 import { useState } from "react";
-import { useFirstName, useLastName, useMail } from "../components/Context";
 
 const SignIn = () => {
   const route = useRouter();

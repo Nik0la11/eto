@@ -11,7 +11,7 @@ const ChangeStatus = () => {
   const { isClicked, setIsClicked } = useClick();
   const onlyDate = new Date().toISOString().split("T")[0];
   const { slotID } = useSlotID();
-  const { status, setStatus } = useStatus();
+  const { status } = useStatus();
   const [selectedStatus, setSelectedStatus] = useState(status || statuses[0]);
   const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
   const { token } = useToken();

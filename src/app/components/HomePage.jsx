@@ -1,10 +1,6 @@
 "use client";
 import Button from "./Button";
-import {
-  CalendarDaysIcon,
-  UserIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
+import { CalendarDaysIcon, UserIcon } from "@heroicons/react/24/outline";
 import { Instagram } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";

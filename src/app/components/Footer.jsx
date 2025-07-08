@@ -1,5 +1,4 @@
 import { MapPinIcon, ClockIcon, PhoneIcon } from "@heroicons/react/24/outline";
-import StyledListItem from "./StyledListItem";
 
 const Footer = () => {
   return (

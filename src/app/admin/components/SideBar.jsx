@@ -4,9 +4,9 @@ import { useFreeAppointments } from "./Context";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import { useState, useEffect } from "react";
 const SideBar = () => {
-  const { calendar, setCalendar } = useCalendar();
-  const { freeAppointments, setFreeAppointments } = useFreeAppointments();
-  const { workingHours, setWorkingHours } = useWorkingHours();
+  const { setCalendar } = useCalendar();
+  const { setFreeAppointments } = useFreeAppointments();
+  const { setWorkingHours } = useWorkingHours();
   const [openDropDown, setOpenDropDown] = useState(false);
 
   const useScreenSize = () => {

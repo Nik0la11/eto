@@ -15,7 +15,6 @@ import { useClick, useStatus, useDate, useSlotID } from "./Context";
 
 // Serbian Latin locale for FullCalendar
 import srLatinLocale from "../sr-latin";
-import { Cuprum } from "next/font/google";
 
 export default function Calendar() {
   const colorMap = {
@@ -30,7 +29,6 @@ export default function Calendar() {
   // Refs to keep track of previously fetched data to avoid unnecessary API calls
   const lastFetchedDate = useRef(null);
   const lastFetchedDay = useRef(null);
-  const lastViewType = useRef(null);
 
   const [day, setDay] = useState(null);
 
@@ -243,10 +241,8 @@ export default function Calendar() {
         allDaySlot={true}
         datesSet={(arg) => {
           // Called when the calendar view or date changes
-          const viewStart = arg.start.toISOString().slice(0, 10);
-          const nextMonthFirstDay = getFirstDayOfNextMonth(viewStart);
           const viewType = arg.view.type;
-          const viewEnd = arg.end.toISOString().slice(0, 10);
+
           setCurrentView(arg.view.type);
 
           const currentMonthEvents = monthEvents;
