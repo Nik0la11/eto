@@ -17,7 +17,8 @@ const SignIn = () => {
   const [number, setNumber] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
-  const username = "draza picka1234";
+  const [isClicked, setIsClicked] = useState(false);
+  const username = "draza picka124";
 
   const handleSignIn = () => {
     route.push("/signIn");
@@ -25,31 +26,33 @@ const SignIn = () => {
 
   const handleRegistration = async (e) => {
     e.preventDefault();
-    try {
-      const res = await fetch(`${BASE_URL}/v1/authentication/user`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          first_name,
-          last_name,
-          username,
-          email,
-          password,
-        }),
-      });
+    setIsClicked(true);
+    if (password === password2)
+      try {
+        const res = await fetch(`${BASE_URL}/v1/authentication/user`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            first_name,
+            last_name,
+            username,
+            email,
+            password,
+          }),
+        });
 
-      if (!res.ok) {
-        throw new Error("Registration failed");
+        if (!res.ok) {
+          throw new Error("Registration failed");
+        }
+
+        const result = await res.json();
+        console.log("Registration result:", result);
+        route.push("/");
+      } catch (err) {
+        console.log("Error:", err);
       }
-
-      const result = await res.json();
-      console.log("Registration result:", result);
-      route.push("/");
-    } catch (err) {
-      console.log("Error:", err);
-    }
   };
   return (
     <div>
@@ -137,7 +140,7 @@ const SignIn = () => {
                   />
                 </div>
               </div>
-              <div className="flex gap-2 py-4">
+              <div className="flex gap-2 ">
                 <div className="flex flex-col gap-2">
                   <p className="font-['Montserrat'] text-[#2E2E2E]">Lozinka</p>
                   <input
@@ -161,6 +164,12 @@ const SignIn = () => {
                   />
                 </div>
               </div>
+              {password !== password2 && isClicked === true ? (
+                <p className="font-['Montserrat'] text-red-600">
+                  Lozinke se ne poklapaju. Molimo pokušajte ponovo.
+                </p>
+              ) : null}
+
               <div className="flex justify-center items-center gap-20">
                 <Button className="flex-1">Registracija</Button>
 

@@ -13,7 +13,8 @@ const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [data, setData] = useState(null);
-  const { setToken } = useToken();
+  const { token, setToken } = useToken();
+  const [isClicked, setIsClicked] = useState(false);
   const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
   const route = useRouter();
@@ -24,7 +25,7 @@ const SignIn = () => {
 
   const handleSignIn = async (e) => {
     e.preventDefault();
-
+    setIsClicked(true);
     try {
       const res = await fetch(`${BASE_URL}/v1/authentication/token`, {
         method: "POST",
@@ -118,6 +119,12 @@ const SignIn = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+              {!token && isClicked === true ? (
+                <p className="font-['Montserrat'] text-[#D4AF37] text-red-600">
+                  Email ili lozinka nisu tačni. Molimo pokušajte ponovo.
+                </p>
+              ) : null}
+
               <div className="flex">
                 <Button className="flex gap-2">
                   <UserIcon className="h-6 w-6 text-black-600" />
