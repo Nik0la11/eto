@@ -48,7 +48,9 @@ export default function Calendar() {
 
   // Controls whether calendar is ready to fetch events
   const [readyToFetch, setReadyToFetch] = useState(false);
-
+  const [monthEvents, setMonthEvents] = useState([]);
+  const [dayEvents, setDayEvents] = useState([]);
+  const [currentView, setCurrentView] = useState("dayGridMonth");
   // Triggered when a date on the calendar is clicked
   const handleDateClick = (arg) => {
     console.log(arg); // Logs clicked date object
@@ -72,7 +74,7 @@ export default function Calendar() {
   };
 
   // Fetches event data from backend for a given date
-  const fetchEvents = async (formattedDate) => {
+  const fetchMonthEvents = async (formattedDate) => {
     if (!token) return [];
     const nextMonth = getFirstDayOfNextMonth(formattedDate);
     console.log(formattedDate);
@@ -98,12 +100,14 @@ export default function Calendar() {
           allDay: true,
           title: `${slot.booked_slots} zakazanih`, // Display how many bookings
         }));
+
         return mappedEvents;
       } else {
         return [];
       }
     } catch (err) {
       console.error("Error fetching data:", err);
+
       return [];
     }
   };
@@ -129,23 +133,21 @@ export default function Calendar() {
     const currentStart = calendarApi.view.currentStart
       .toISOString()
       .slice(0, 10);
-
     const firstDayOfNextMonth = getFirstDayOfNextMonth(currentStart);
+    const storageKey = `events_${firstDayOfNextMonth}`;
 
-    const storedMonthData = localStorage.getItem(
-      `events${firstDayOfNextMonth}`
-    );
+    const storedData = localStorage.getItem(storageKey);
 
-    if (!storedMonthData) {
-      fetchEvents(firstDayOfNextMonth).then((fetchedEvents) => {
-        localStorage.setItem(
-          `events_${firstDayOfNextMonth}`,
-          JSON.stringify(fetchedEvents)
-        );
-        setEvents(fetchedEvents);
-      });
+    if (storedData) {
+      const parsedEvents = JSON.parse(storedData);
+      setMonthEvents(parsedEvents); // store for later filtering
+      setEvents(parsedEvents); // show them now
     } else {
-      setEvents(JSON.parse(storedMonthData));
+      fetchMonthEvents(firstDayOfNextMonth).then((fetchedEvents) => {
+        localStorage.setItem(storageKey, JSON.stringify(fetchedEvents));
+        setMonthEvents(fetchedEvents); // store for reuse
+        setEvents(fetchedEvents); // show in calendar
+      });
     }
   }, [token, readyToFetch]);
 
@@ -175,6 +177,7 @@ export default function Calendar() {
             borderColor: colorMap[slot.status],
           }));
 
+          setDayEvents(mappedEvents);
           setEvents(mappedEvents);
         } else {
           setEvents([]);
@@ -189,6 +192,24 @@ export default function Calendar() {
     const formatted = nextMonth.toISOString().slice(0, 10); // "YYYY-MM-DD"
     return formatted;
   }
+
+  useEffect(() => {
+    if (currentView === "dayGridMonth") {
+      setEvents(monthEvents);
+    } else if (currentView === "timeGridWeek") {
+      const start = calendarRef.current?.getApi().view.currentStart;
+      const end = calendarRef.current?.getApi().view.currentEnd;
+
+      const filteredWeekEvents = monthEvents.filter((event) => {
+        const eventStart = new Date(event.start);
+        return eventStart >= start && eventStart < end;
+      });
+
+      setEvents(filteredWeekEvents);
+    } else if (currentView === "timeGridDay" || currentView === "dayGridDay") {
+      setEvents(dayEvents);
+    }
+  }, [currentView, monthEvents, dayEvents]);
 
   return (
     <div className="h-full w-full overflow-hidden">
@@ -226,30 +247,25 @@ export default function Calendar() {
           const nextMonthFirstDay = getFirstDayOfNextMonth(viewStart);
           const viewType = arg.view.type;
           const viewEnd = arg.end.toISOString().slice(0, 10);
+          setCurrentView(arg.view.type);
 
-          const monthKey = `events_${getFirstDayOfNextMonth(viewStart)}`;
-          let monthEvents = [];
+          const currentMonthEvents = monthEvents;
 
-          try {
-            monthEvents = JSON.parse(localStorage.getItem(monthKey) || []);
-          } catch {
-            monthEvents = [];
-          }
           if (viewType === "dayGridMonth") {
             // For month/week view: fetch by view start date
             const currentEventKeys = events
               .map((e) => e.start + e.end + e.title)
               .join();
-            const newEventKeys = monthEvents
+            const newEventKeys = currentMonthEvents
               .map((e) => e.start + e.end + e.title)
               .join();
             if (currentEventKeys !== newEventKeys) {
               setEvents(monthEvents);
             }
-          } else if (viewType === "timeGridWeek") {
+          } else if (viewType === "dayGridWeek") {
             const startDate = new Date(arg.start);
             const endDate = new Date(arg.end);
-            const filteredWeekEvents = monthEvents.filter((event) => {
+            const filteredWeekEvents = currentMonthEvents.filter((event) => {
               const eventStart = new Date(event.start);
               return eventStart >= startDate && eventStart < endDate;
             });
