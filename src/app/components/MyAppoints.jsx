@@ -115,62 +115,65 @@ const MyAppoints = ({ appointment, setAppointment }) => {
             <div
               className={`${data?.data?.length > 7 ? "max-h-64 overflow-y-auto grid grid-cols-[1fr_1fr_1fr_1fr_0.2fr] gap-2 relative" : "overflow-visible grid grid-cols-[1fr_1fr_1fr_1fr_0.2fr] gap-2 relative"}`}
             >
-              {data?.data
-                .sort((a, b) => new Date(b.start_time) - new Date(a.start_time))
-                .map((appointment) => (
-                  <React.Fragment key={appointment.id}>
-                    <div className="h-12 grow bg-[#E5E4DF] font-['Montserrat'] font-semibold flex justify-center items-center">
-                      {appointment.id}
-                    </div>
-                    <div className="h-12 grow bg-[#E5E4DF] font-['Montserrat'] font-semibold flex justify-center items-center">
-                      {new Date(appointment.start_time).toLocaleDateString(
-                        "en-CA"
-                      )}
-                    </div>
+              {Array.isArray(data?.data) &&
+                [...data.data]
+                  .sort(
+                    (a, b) => new Date(b.start_time) - new Date(a.start_time)
+                  )
+                  .map((appointment) => (
+                    <React.Fragment key={appointment.id}>
+                      <div className="h-12 grow bg-[#E5E4DF] font-['Montserrat'] font-semibold flex justify-center items-center">
+                        {appointment.id}
+                      </div>
+                      <div className="h-12 grow bg-[#E5E4DF] font-['Montserrat'] font-semibold flex justify-center items-center">
+                        {new Date(appointment.start_time).toLocaleDateString(
+                          "en-CA"
+                        )}
+                      </div>
 
-                    <div className="h-12 grow bg-[#E5E4DF] font-['Montserrat'] font-semibold flex justify-center items-center">
-                      {new Date(appointment.start_time).toLocaleTimeString(
-                        "en-GB",
-                        {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        }
-                      )}
-                    </div>
-
-                    <div
-                      className={`h-12 grow  font-['Montserrat'] font-semibold flex justify-center items-center ${appointment.status === "booked" ? "bg-[#F0DB88]" : "bg-[#E5E4DF]"}`}
-                    >
-                      {appointment.status}
-                    </div>
-
-                    <div className="relative h-12 grow font-['Montserrat'] font-semibold flex justify-center items-center">
-                      {isLessThanTwoHours(appointment.start_time) ? null : (
-                        <EllipsisVerticalIcon
-                          className="h-6 w-6 cursor-pointer text-black-600  hover:text-black-900"
-                          onClick={() =>
-                            setOpenDropDownID(
-                              openDropDownID === appointment.id
-                                ? null
-                                : appointment.id
-                            )
+                      <div className="h-12 grow bg-[#E5E4DF] font-['Montserrat'] font-semibold flex justify-center items-center">
+                        {new Date(appointment.start_time).toLocaleTimeString(
+                          "en-GB",
+                          {
+                            hour: "2-digit",
+                            minute: "2-digit",
                           }
-                        />
-                      )}
+                        )}
+                      </div>
 
-                      {openDropDownID === appointment.id && (
-                        <div className="absolute right-0 top-full w-36 bg-white border shadow rounded z-10">
-                          <button
-                            className="w-full text-left px-4 py-2 hover:bg-gray-100 text-p-color"
-                            onClick={handleCancelAppointment}
-                          >
-                            Otkazi termin
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  </React.Fragment>
-                ))}
+                      <div
+                        className={`h-12 grow  font-['Montserrat'] font-semibold flex justify-center items-center ${appointment.status === "booked" ? "bg-[#F0DB88]" : "bg-[#E5E4DF]"}`}
+                      >
+                        {appointment.status}
+                      </div>
+
+                      <div className="relative h-12 grow font-['Montserrat'] font-semibold flex justify-center items-center">
+                        {isLessThanTwoHours(appointment.start_time) ? null : (
+                          <EllipsisVerticalIcon
+                            className="h-6 w-6 cursor-pointer text-black-600  hover:text-black-900"
+                            onClick={() =>
+                              setOpenDropDownID(
+                                openDropDownID === appointment.id
+                                  ? null
+                                  : appointment.id
+                              )
+                            }
+                          />
+                        )}
+
+                        {openDropDownID === appointment.id && (
+                          <div className="absolute right-0 top-full w-36 bg-white border shadow rounded z-10">
+                            <button
+                              className="w-full text-left px-4 py-2 hover:bg-gray-100 text-p-color"
+                              onClick={handleCancelAppointment}
+                            >
+                              Otkazi termin
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </React.Fragment>
+                  ))}
             </div>
 
             {token === null ? null : (

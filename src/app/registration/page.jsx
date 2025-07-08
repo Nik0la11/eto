@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Button from "../components/Button";
 import Footer from "../components/Footer";
 import { useState } from "react";
+import { useFirstName, useLastName, useMail } from "../components/Context";
 
 const SignIn = () => {
   const route = useRouter();
@@ -16,7 +17,7 @@ const SignIn = () => {
   const [number, setNumber] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
-  const username = "draza picka12";
+  const username = "draza picka1234";
 
   const handleSignIn = () => {
     route.push("/signIn");
@@ -45,7 +46,6 @@ const SignIn = () => {
 
       const result = await res.json();
       console.log("Registration result:", result);
-
       route.push("/");
     } catch (err) {
       console.log("Error:", err);

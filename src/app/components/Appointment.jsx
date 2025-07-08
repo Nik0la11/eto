@@ -4,7 +4,7 @@ import Button from "./Button";
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
-import { useToken } from "./Context";
+import { useFirstName, useLastName, useMail, useToken } from "./Context";
 
 const Appointment = () => {
   const englishToSerbian = {
@@ -23,7 +23,7 @@ const Appointment = () => {
   const [data, setData] = useState(null);
   const { token } = useToken();
   const [hasMounted, setHasMounted] = useState(false);
-
+  const [userInfo, setUserInfo] = useState("");
   const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
   const worker_id = 20;
 
@@ -59,6 +59,20 @@ const Appointment = () => {
   };
 
   const dates = getNextThreeDays();
+
+  useEffect(() => {
+    if (token)
+      fetch(`${BASE_URL}/v1/user/user_info`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => res.json())
+        .then((json) => setUserInfo(json))
+        .catch((err) => console.log(err));
+  }, [token]);
 
   const handleBooking = async () => {
     try {
@@ -153,7 +167,11 @@ const Appointment = () => {
             placeholder="Unesite ime i prezime"
             readOnly
             className="border p-2 rounded focus:outline-none"
-            value={""}
+            value={
+              userInfo && userInfo.data
+                ? `${userInfo.data.first_name} ${userInfo.data.last_name}`
+                : ""
+            }
           />
           <label className="font-['Montserrat'] pt-4 text-[#2E2E2E]">
             Vaš broj telefona:
@@ -173,7 +191,7 @@ const Appointment = () => {
             placeholder="Unesite email"
             readOnly
             className="border p-2 rounded focus:outline-none"
-            value={""}
+            value={userInfo && userInfo.data ? `${userInfo.data.email}` : ""}
           />
           <label className="font-['Montserrat'] pt-4 text-[#2E2E2E]">
             Datum:

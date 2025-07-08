@@ -20,9 +20,10 @@ export default function ResetPasswordEmail({ userName, resetLink }) {
           <Text style={heading}>Potvrdite e-mail</Text>
 
           <Text style={text}>
-            Poštovani/a, Hvala Vam što ste se registrovali! Da biste završili
-            proces registracije i potvrdili svoju e-mail adresu, kliknite na
-            dugme ispod:
+            Poštovani/a, <br />
+            Hvala Vam što ste se registrovali! Da biste završili proces
+            registracije i potvrdili svoju e-mail adresu, kliknite na dugme
+            ispod:
           </Text>
 
           <Section style={{ textAlign: "center", margin: "24px 0" }}>

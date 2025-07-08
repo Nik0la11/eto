@@ -10,9 +10,8 @@ import { UserIcon } from "@heroicons/react/24/outline";
 import { useToken } from "../components/Context";
 
 const SignIn = () => {
-  const [logedIn, setLogedIn] = useState(true);
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [data, setData] = useState(null);
   const { setToken } = useToken();
   const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
